@@ -1,5 +1,9 @@
 package com.edm.kassimentz.meupontomobile.database;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,47 +14,21 @@ import java.util.Set;
  */
 public abstract class DaoDB<T> implements DAO<T> {
 
-    public Set<T> objects = new HashSet<T>();
 
     @Override
-    public boolean add(T t) {
-        if (t != null && !objects.contains(t))
-            objects.add(t);
-
-        return objects.contains(t);
+    public Cursor countAll(Context context, String table) {
+        SQLiteDatabase bd = new DatabaseHandler(context).getReadableDatabase();
+        String sql = "SELECT COUNT(*) FROM " + table;
+        Cursor cursor = bd.rawQuery(sql, null);
+        bd.close();
+        return cursor;
     }
 
     @Override
-    public boolean update(int index, T t) {
-        if (index >= 0 && t != null) {
-            if (objects.remove(getByIndex(index))) {
-                objects.add(t);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean remove(int index) {
-        Object obj = getByIndex(index);
-
-        if (obj != null && objects.contains(obj))
-            objects.remove(obj);
-
-        return !objects.contains(obj);
-    }
-
-    @Override
-    public T getByIndex(int index) {
-        if (index >= 0 && index < objects.size())
-            return new ArrayList<T>(objects).get(index);
-
-        return null;
-    }
-
-    @Override
-    public List<T> getAll() {
-        return new ArrayList<T>(objects);
+    public Cursor getAll(Context context, String table, String[] colums) {
+        SQLiteDatabase bd = new DatabaseHandler(context).getReadableDatabase();
+        Cursor cursor = bd.query(table, colums, null, null, null, null, "area ASC");
+        bd.close();
+        return cursor;
     }
 }

@@ -1,5 +1,8 @@
 package com.edm.kassimentz.meupontomobile.database;
 
+import android.content.Context;
+import android.database.Cursor;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,9 +11,6 @@ import java.util.List;
  */
 public interface DAO<T> {
 
-    public boolean add(T t);
-    public boolean update(int index, T t);
-    public boolean remove(int index);
-    public T getByIndex(int index);
-    public List<T> getAll();
+    public Cursor countAll(Context context, String table);
+    public Cursor getAll(Context context, String table, String[] colums);
 }
