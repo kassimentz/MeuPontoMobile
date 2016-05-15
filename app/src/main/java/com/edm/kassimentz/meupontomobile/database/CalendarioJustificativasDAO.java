@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by Cassio on 14/05/16.
+ * Created by Kassiane Mentz on 14/05/16.
  */
 public interface CalendarioJustificativasDAO {
 

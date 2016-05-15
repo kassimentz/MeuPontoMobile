@@ -5,7 +5,7 @@ import com.edm.kassimentz.meupontomobile.model.Funcionario;
 import java.util.Calendar;
 
 /**
- * Created by Cassio on 14/05/16.
+ * Created by Kassiane Mentz on 14/05/16.
  */
 public interface FuncionarioDAO{
 

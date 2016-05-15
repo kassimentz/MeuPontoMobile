@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by Cassio on 14/05/16.
+ * Created by Kassiane Mentz on 14/05/16.
  */
 public abstract class DaoDB<T> implements DAO<T> {
 
