@@ -6,8 +6,9 @@ import java.util.List;
 
 public class Funcionario implements Serializable {
 
+	private int id;
 	private String nome;
-	private int cpf;
+	private String cpf;
 	private String cargo;
 	private Empresa empresa;
 	private JornadaTrabalho jornadaTrabalho;
@@ -20,7 +21,7 @@ public class Funcionario implements Serializable {
 
 	}
 
-	public Funcionario(String nome, int cpf, String cargo, Empresa empresa, JornadaTrabalho jornadaTrabalho, List<Endereco> endereco, List<PeriodosTrabalhados> periodosTrabalhados, List<CalendarioJustificativas> calendarioJustificativas, List<Telefone> telefone) {
+	public Funcionario(String nome, String cpf, String cargo, Empresa empresa, JornadaTrabalho jornadaTrabalho, List<Endereco> endereco, List<PeriodosTrabalhados> periodosTrabalhados, List<CalendarioJustificativas> calendarioJustificativas, List<Telefone> telefone) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.cargo = cargo;
@@ -32,6 +33,10 @@ public class Funcionario implements Serializable {
 		this.telefone = telefone;
 	}
 
+	public int getId() {
+		return id;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -40,11 +45,11 @@ public class Funcionario implements Serializable {
 		this.nome = nome;
 	}
 
-	public int getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(int cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 

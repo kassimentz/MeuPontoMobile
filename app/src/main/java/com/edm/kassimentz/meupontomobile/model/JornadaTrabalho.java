@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 public class JornadaTrabalho  implements Serializable {
 
+	private int id;
 	private int duracao_intervalo;
 	private int tempo_alerta_intervalo;
 	private Calendar hora_inicio_jornada;
@@ -31,7 +32,11 @@ public class JornadaTrabalho  implements Serializable {
         this.periodo = periodo;
     }
 
-    public int getDuracao_intervalo() {
+	public int getId() {
+		return id;
+	}
+
+	public int getDuracao_intervalo() {
 		return duracao_intervalo;
 	}
 

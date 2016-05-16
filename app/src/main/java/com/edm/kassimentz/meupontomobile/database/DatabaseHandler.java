@@ -17,8 +17,6 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     // Database Name
     private static final String DATABASE_NAME = "meuPontoMobile";
 
-
-
     // Table: endereco
     private static final String TABLE_ENDERECO = "CREATE TABLE endereco (id_endereco INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, logradouro VARCHAR (100), numero INTEGER (10), complemento VARCHAR (50), cidade VARCHAR (100), estado CHAR (2), pais CHAR (2));";
 
@@ -38,7 +36,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     private static final String TABLE_JORNADA_TRABALHO = "CREATE TABLE jornada_trabalho (id_jornada_trabalho INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, duracao_intervalo INTEGER, tempo_alerta_intervalo INTEGER, hora_inicio_jornada DATETIME, hora_saida_intervalo DATETIME, hora_termino_jornada DATETIME, horas_trabalho_dia DATETIME, dias_trabalho_semana INTEGER, trabalho_domingo BOOLEAN, id_periodo_trabalho INTEGER REFERENCES periodo_trabalho (id_periodo));";
 
     //Table: funcionario
-    private static final String TABLE_FUNCIONARIO = "CREATE TABLE funcionario (id_funcionario INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome VARCHAR (200), cpf INTEGER (12), cargo VARCHAR (100), id_empresa INTEGER REFERENCES endereco, id_jornada_trabalho INTEGER REFERENCES jornada_trabalho (id_jornada_trabalho));";
+    private static final String TABLE_FUNCIONARIO = "CREATE TABLE funcionario (id_funcionario INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome VARCHAR (200), cpf VARCHAR (12), cargo VARCHAR (100), id_empresa INTEGER REFERENCES endereco, id_jornada_trabalho INTEGER REFERENCES jornada_trabalho (id_jornada_trabalho));";
 
     // Table: calendario_justificativas
     private static final String TABLE_CALENDARIO_JUSTIFICATIVAS = "CREATE TABLE calendario_justificativas (id_calendario_justificativas INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, data_hora DATETIME, observacao BLOB, id_justificativa INTEGER REFERENCES justificativa (id_justificativa));";

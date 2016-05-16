@@ -9,8 +9,61 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.edm.kassimentz.meupontomobile.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Meu Ponto Mobile"
+            android:id="@+id/lblTituloApp"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="Arial"
+            android:textColor="@color/colorGreen"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:paddingTop="5dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/txtLogin"
+            android:layout_gravity="center_horizontal"
+            android:hint="Login"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorGreen"
+            android:textColorHint="@color/colorGreen"
+            android:textAlignment="center"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:inputType="textPassword"
+            android:hint="Senha"
+            android:id="@+id/txtSenha"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorGreen"
+            android:textColorHint="@color/colorGreen"
+            android:textAlignment="center"/>
+
+        <ImageButton
+            android:layout_width="93dp"
+            android:layout_height="58dp"
+            android:id="@+id/btnLogin"
+            android:layout_gravity="center_horizontal"
+            android:src="#568eef"
+            android:layout_weight="0.01" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Cadastrar"
+            android:id="@+id/lblCadastrar"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
 </RelativeLayout>
