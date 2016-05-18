@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface DAO<T> {
 
-    public SQLiteDatabase getDb();
-    public boolean criarDb(Context context);
-    public boolean conectarDb();
-    public Cursor countAll(Context context, String table);
-    public Cursor getAll(Context context, String table, String[] colums);
+    public boolean salvar(T t);
+    public boolean deleter(T t);
+    public boolean atualizar(T t);
+    public List<T> listar();
+    public T procurarPorId(Integer id);
 }

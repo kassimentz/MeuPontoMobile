@@ -3,6 +3,7 @@ package com.edm.kassimentz.meupontomobile;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 
 import com.edm.kassimentz.meupontomobile.database.FuncionarioDAOImpl;
@@ -16,50 +17,31 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    FuncionarioDAOImpl funcionarioDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Endereco enderecoEmpresa = new Endereco();
-        enderecoEmpresa.setCep(90820030);
-        enderecoEmpresa.setCidade("Porto Alegre");
-        enderecoEmpresa.setComplemento("Loja 2");
-        enderecoEmpresa.setEstado("RS");
-        enderecoEmpresa.setLogradouro("Rua A");
-        enderecoEmpresa.setNumero(200);
-        enderecoEmpresa.setPais("BR");
+        funcionarioDAO = new FuncionarioDAOImpl(this.getBaseContext());
 
 
-        Telefone telefoneEmpresa = new Telefone();
-        telefoneEmpresa.setNumero(32323232);
-        telefoneEmpresa.setDdd(51);
+    }
 
-        List<Telefone> telefones = new ArrayList<Telefone>();
-        telefones.add(telefoneEmpresa);
-
-        Empresa empresa = new Empresa();
-        empresa.setNome("Empresa 1");
-        empresa.setEndereco(enderecoEmpresa);
-        empresa.setTelefone(telefones);
+    public void salvar (View v){
 
         Funcionario funcionario = new Funcionario();
         funcionario.setNome("Kassiane Mentz");
         funcionario.setCargo("Desenvolvedora");
         funcionario.setCpf("01119475023");
-        funcionario.setEmpresa(empresa);
 
-        FuncionarioDAOImpl funcionarioDAO = new FuncionarioDAOImpl(this.getBaseContext());
-        funcionarioDAO.insertFuncionario(funcionario);
+        funcionarioDAO.salvar(funcionario);
 
-        Log.d("table", "funcionario inserido com sucesso");
-
-        List<Funcionario> listFuncionarios = funcionarioDAO.buscarTodos();
+        List<Funcionario> listFuncionarios = funcionarioDAO.listar();
 
         for (Funcionario f: listFuncionarios) {
             Log.d("table", f.getNome());
             Log.d("table", f.getCargo());
         }
-
     }
 }

@@ -1,12 +1,11 @@
 package com.edm.kassimentz.meupontomobile.model;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 public class Funcionario implements Serializable {
 
-	private int id;
+	private Integer id_funcionario;
 	private String nome;
 	private String cpf;
 	private String cargo;
@@ -33,8 +32,12 @@ public class Funcionario implements Serializable {
 		this.telefone = telefone;
 	}
 
-	public int getId() {
-		return id;
+	public Integer getId() {
+		return id_funcionario;
+	}
+
+	public void setId(Integer id) {
+		this.id_funcionario = id;
 	}
 
 	public String getNome() {

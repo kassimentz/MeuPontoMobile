@@ -13,4 +13,29 @@ public class PeriodosTrabalhadosDAOImpl extends DaoDB<PeriodosTrabalhados> imple
     public List<PeriodosTrabalhados> getPeriodosTrabalhadosPorData(Calendar inicio, Calendar fim) {
         return null;
     }
+
+    @Override
+    public boolean salvar(PeriodosTrabalhados periodosTrabalhados) {
+        return false;
+    }
+
+    @Override
+    public boolean deleter(PeriodosTrabalhados periodosTrabalhados) {
+        return false;
+    }
+
+    @Override
+    public boolean atualizar(PeriodosTrabalhados periodosTrabalhados) {
+        return false;
+    }
+
+    @Override
+    public List<PeriodosTrabalhados> listar() {
+        return null;
+    }
+
+    @Override
+    public PeriodosTrabalhados procurarPorId(Integer id) {
+        return null;
+    }
 }

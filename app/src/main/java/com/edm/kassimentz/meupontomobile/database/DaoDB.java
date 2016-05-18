@@ -14,46 +14,10 @@ import java.util.Set;
  */
 public abstract class DaoDB<T> implements DAO<T> {
 
+    protected DatabaseHandler databaseHandler;
+    protected SQLiteDatabase banco;
 
-    DatabaseHandler databaseHandler;
-    SQLiteDatabase bd;
-
-    @Override
-    public boolean criarDb(Context context) {
-        databaseHandler = new DatabaseHandler(context);
-        this.bd =  databaseHandler.getWritableDatabase();
-        return this.bd.isOpen();
-    }
-
-    @Override
-    public boolean conectarDb() {
-        if(this.bd.isOpen()) {
-            this.bd.beginTransaction();
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    @Override
-    public SQLiteDatabase getDb() {
-        return databaseHandler.getWritableDatabase();
-    }
-
-    @Override
-    public Cursor countAll(Context context, String table) {
-        SQLiteDatabase bd = new DatabaseHandler(context).getReadableDatabase();
-        String sql = "SELECT COUNT(*) FROM " + table;
-        Cursor cursor = bd.rawQuery(sql, null);
-        bd.close();
-        return cursor;
-    }
-
-    @Override
-    public Cursor getAll(Context context, String table, String[] colums) {
-        SQLiteDatabase bd = new DatabaseHandler(context).getReadableDatabase();
-        Cursor cursor = bd.query(table, colums, null, null, null, null, "area ASC");
-        bd.close();
-        return cursor;
+    public DatabaseHandler conectar(Context context){
+        return databaseHandler = new DatabaseHandler(context);
     }
 }
