@@ -23,23 +23,17 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     // Table: telefone
     private static final String TABLE_TELEFONE = "CREATE TABLE telefone (id_telefone INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, ddd CHAR (2), telefone CHAR (10));";
 
-    // Table: periodo_trabalho
-    private static final String TABLE_PERIODO_TRABALHO = "CREATE TABLE periodo_trabalho (id_periodo INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, periodo VARCHAR (50));";
-
     // Table: empresa
     private static final String TABLE_EMPRESA = "CREATE TABLE empresa (id_empresa INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_telefone INTEGER (10) REFERENCES telefone (id_telefone), id_endereco INTEGER (10) REFERENCES endereco (id_endereco), nome VARCHAR (100));";
 
-    // Table: justificativa
-    private static final String TABLE_JUSTIFICATIVA = "CREATE TABLE justificativa (id_justificativa INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, justificativa VARCHAR (50));";
-
     //Table: jornada_trabalho
-    private static final String TABLE_JORNADA_TRABALHO = "CREATE TABLE jornada_trabalho (id_jornada_trabalho INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, duracao_intervalo INTEGER, tempo_alerta_intervalo INTEGER, hora_inicio_jornada DATETIME, hora_saida_intervalo DATETIME, hora_termino_jornada DATETIME, horas_trabalho_dia DATETIME, dias_trabalho_semana INTEGER, trabalho_domingo BOOLEAN, id_periodo_trabalho INTEGER REFERENCES periodo_trabalho (id_periodo));";
+    private static final String TABLE_JORNADA_TRABALHO = "CREATE TABLE jornada_trabalho (id_jornada_trabalho INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, duracao_intervalo INTEGER, tempo_alerta_intervalo INTEGER, hora_inicio_jornada DATETIME, hora_saida_intervalo DATETIME, hora_termino_jornada DATETIME, horas_trabalho_dia DATETIME, dias_trabalho_semana INTEGER, trabalho_domingo BOOLEAN, periodo_trabalho INTEGER);";
 
     //Table: funcionario
     private static final String TABLE_FUNCIONARIO = "CREATE TABLE funcionario (id_funcionario INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome VARCHAR (200), cpf VARCHAR (12), cargo VARCHAR (100), id_empresa INTEGER REFERENCES endereco, id_jornada_trabalho INTEGER REFERENCES jornada_trabalho (id_jornada_trabalho));";
 
     // Table: calendario_justificativas
-    private static final String TABLE_CALENDARIO_JUSTIFICATIVAS = "CREATE TABLE calendario_justificativas (id_calendario_justificativas INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, data_hora DATETIME, observacao BLOB, id_justificativa INTEGER REFERENCES justificativa (id_justificativa));";
+    private static final String TABLE_CALENDARIO_JUSTIFICATIVAS = "CREATE TABLE calendario_justificativas (id_calendario_justificativas INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, data_hora DATETIME, observacao BLOB, justificativa INTEGER);";
 
     // Table: funcionario_calendario_justificativas
     private static final String TABLE_FUNCIONARIO_CALENDARIO_JUSTIFICATIVAS = "CREATE TABLE funcionario_calendario_justificativas (id_funcionario_calendario_justificativas INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_funcionario INTEGER REFERENCES telefone, id_calendario_justificativas INTEGER REFERENCES justificativa);";
@@ -68,12 +62,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         Log.d("banco", "TABLE_ENDERECO criada");
         db.execSQL(TABLE_TELEFONE);
         Log.d("banco", "TABLE_TELEFONE criada");
-        db.execSQL(TABLE_PERIODO_TRABALHO);
-        Log.d("banco", "TABLE_PERIODO_TRABALHO criada");
         db.execSQL(TABLE_EMPRESA);
         Log.d("banco", "TABLE_EMPRESA criada");
-        db.execSQL(TABLE_JUSTIFICATIVA);
-        Log.d("banco", "TABLE_JUSTIFICATIVA criada");
         db.execSQL(TABLE_JORNADA_TRABALHO);
         Log.d("banco", "TABLE_JORNADA_TRABALHO criada");
         db.execSQL(TABLE_FUNCIONARIO);
@@ -98,10 +88,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS endereco");
-        db.execSQL("DROP TABLE IF EXISTS telefone");
-        db.execSQL("DROP TABLE IF EXISTS periodo_trabalho");
+        db.execSQL("DROP TABLE IF EXISTS telefone");  
         db.execSQL("DROP TABLE IF EXISTS empresa");
-        db.execSQL("DROP TABLE IF EXISTS justificativa");
         db.execSQL("DROP TABLE IF EXISTS jornada_trabalho");
         db.execSQL("DROP TABLE IF EXISTS funcionario");
         db.execSQL("DROP TABLE IF EXISTS calendario_justificativas");
