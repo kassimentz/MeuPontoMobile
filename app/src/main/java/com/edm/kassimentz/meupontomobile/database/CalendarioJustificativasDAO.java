@@ -13,7 +13,7 @@ import java.util.List;
 public interface CalendarioJustificativasDAO {
 
     boolean salvar(CalendarioJustificativas calendarioJustificativas);
-    boolean deleter(CalendarioJustificativas calendarioJustificativas);
+    boolean deletar(CalendarioJustificativas calendarioJustificativas);
     boolean atualizar(CalendarioJustificativas calendarioJustificativas);
     List<CalendarioJustificativas> listar();
     CalendarioJustificativas procurarPorId(Integer id);

@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 public class CalendarioJustificativas implements Serializable{
 
+    private Integer id;
 	private Calendar data_hora;
 	private String observacao;
 	private Justificativa justificativa;
@@ -17,6 +18,10 @@ public class CalendarioJustificativas implements Serializable{
         this.data_hora = data_hora;
         this.observacao = observacao;
         this.justificativa = justificativa;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public Calendar getData_hora() {
