@@ -1,5 +1,7 @@
 package com.edm.kassimentz.meupontomobile.database;
 
+import android.content.Context;
+
 import com.edm.kassimentz.meupontomobile.model.JornadaTrabalho;
 
 import java.util.List;
@@ -7,14 +9,22 @@ import java.util.List;
 /**
  * Created by Kassiane Mentz on 14/05/16.
  */
-public class JornadaTrabalhoDAOImpl extends DaoDB<JornadaTrabalho> implements JornadaTrabalhoDAO {
+public class JornadaTrabalhoDAOImpl extends JornadaTrabalhoDAOBase{
+
+    DatabaseHandler databaseHandler;
+    String tabela = "JornadaTrabalhoDAOImpl";
+
+    public JornadaTrabalhoDAOImpl(Context context){
+        databaseHandler = conectar(context);
+    }
+
     @Override
     public boolean salvar(JornadaTrabalho jornadaTrabalho) {
         return false;
     }
 
     @Override
-    public boolean deleter(JornadaTrabalho jornadaTrabalho) {
+    public boolean deletar(JornadaTrabalho jornadaTrabalho) {
         return false;
     }
 

@@ -42,16 +42,6 @@ public class CalendarioJustificativasDAOImpl extends CalendarioJustificativaDAOB
         dados.put("observacao", calendarioJustificativas.getObservacao());
         dados.put("justificativa", calendarioJustificativas.getJustificativa().ordinal());
 
-        /*
-        * Color color = Color.GREEN;
-        int ordinal = color.ordinal(); // ordinal == 1
-        // save ordinal
-
-        // retrieve from saved value
-        Color savedColor = Color.values()[savedOrdinal];
-
-        * */
-
         boolean result = banco.insert(tabela, null, dados) > 0;
         banco.close();
         Log.d(tabela,"inserido com sucesso");

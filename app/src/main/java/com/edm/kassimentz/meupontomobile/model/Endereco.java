@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Endereco  implements Serializable {
 
+	private Integer id;
 	private String logradouro;
 	private int numero;
 	private String complemento;
@@ -26,7 +27,11 @@ public class Endereco  implements Serializable {
 		this.pais = pais;
 	}
 
-	public String getLogradouro() {
+    public Integer getId() {
+        return id;
+    }
+
+    public String getLogradouro() {
 		return logradouro;
 	}
 

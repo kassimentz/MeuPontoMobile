@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Kassiane Mentz on 14/05/16.
  */
-public class FuncionarioDAOImpl extends DaoDB<Funcionario> implements FuncionarioDAO{
+public class FuncionarioDAOImpl extends FuncionarioDAOBase{
 
     DatabaseHandler databaseHandler;
     String tabela = "funcionario";
@@ -43,7 +43,7 @@ public class FuncionarioDAOImpl extends DaoDB<Funcionario> implements Funcionari
     }
 
     @Override
-    public boolean deleter(Funcionario funcionario) {
+    public boolean deletar(Funcionario funcionario) {
         SQLiteDatabase banco = databaseHandler.getWritableDatabase();
         boolean result = banco.delete(tabela, "id_funcionario=?",
                 new String[]{funcionario.getId().toString()}) > 0;

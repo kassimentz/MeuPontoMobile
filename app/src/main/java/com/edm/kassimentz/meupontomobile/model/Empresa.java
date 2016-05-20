@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Empresa  implements Serializable {
 
-    private int id;
+    private Integer id;
 	private String nome;
 	private Endereco endereco;
     private List<Telefone> telefone;
@@ -20,7 +20,7 @@ public class Empresa  implements Serializable {
         this.telefone = telefone;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

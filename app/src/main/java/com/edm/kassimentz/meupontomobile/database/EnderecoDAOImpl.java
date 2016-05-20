@@ -1,5 +1,8 @@
 package com.edm.kassimentz.meupontomobile.database;
 
+import android.content.Context;
+
+import com.edm.kassimentz.meupontomobile.model.Empresa;
 import com.edm.kassimentz.meupontomobile.model.Endereco;
 
 import java.util.List;
@@ -7,34 +10,37 @@ import java.util.List;
 /**
  * Created by Kassiane Mentz on 14/05/16.
  */
-public class EnderecoDAOImpl extends DaoDB<Endereco> implements EnderecoDAO {
+public class EnderecoDAOImpl extends EmpresaDAOBase {
+
+    DatabaseHandler databaseHandler;
+    String tabela = "endereco";
+
+    public EnderecoDAOImpl(Context context){
+        databaseHandler = conectar(context);
+    }
+
     @Override
-    public boolean salvar(Endereco endereco) {
+    public boolean salvar(Empresa empresa) {
         return false;
     }
 
     @Override
-    public boolean deleter(Endereco endereco) {
+    public boolean deletar(Empresa empres) {
         return false;
     }
 
     @Override
-    public boolean atualizar(Endereco endereco) {
+    public boolean atualizar(Empresa empresa) {
         return false;
     }
 
     @Override
-    public List<Endereco> listar() {
+    public List<Empresa> listar() {
         return null;
     }
 
     @Override
-    public Endereco procurarPorId(Integer id) {
-        return null;
-    }
-
-    @Override
-    public Endereco buscaEndereco(int cep) {
+    public Empresa procurarPorId(Integer id) {
         return null;
     }
 }
