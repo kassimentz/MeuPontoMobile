@@ -125,16 +125,17 @@ public class DB extends SQLiteOpenHelper {
     }
 
 
-    /**
-     *
-     * Usage:
+    public static ContentValues byId(Context ctx, String tabela, String[] values, String field, Integer id){
 
-     ArrayList<ContentValues> rows = DB.selectRows(this, "SELECT * FROM users WHERE active = ?", new String[] { strActive });
+        Cursor c = DB.instance(ctx).query(tabela,
+                values, field+"=? ",new String[]{id.toString()},null,null,null);
 
-     DB.executeSQL(this,
-     "INSERT INTO users (name, active, email) VALUES (?, ?, ?)",
-     new String[]{ name, active, email });
+        ContentValues map = new ContentValues();
+        if(c.moveToNext()){
+            DatabaseUtils.cursorRowToContentValues(c,map);
+        }
+        c.close();
 
-     */
-
+        return map;
+    }
 }

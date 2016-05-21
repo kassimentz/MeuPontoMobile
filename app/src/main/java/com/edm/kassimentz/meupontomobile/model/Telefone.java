@@ -4,31 +4,40 @@ import java.io.Serializable;
 
 public class Telefone  implements Serializable {
 
-	private int ddd;
-	private int numero;
+	private Integer id;
+	private String ddd;
+	private String numero;
 
 	public Telefone(){
 
 	}
 
-    public Telefone(int ddd, int numero) {
+    public Telefone(String ddd, String numero) {
         this.ddd = ddd;
         this.numero = numero;
     }
 
-    public int getDdd() {
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getDdd() {
 		return ddd;
 	}
 
-	public void setDdd(int ddd) {
+	public void setDdd(String ddd) {
 		this.ddd = ddd;
 	}
 
-	public int getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 }

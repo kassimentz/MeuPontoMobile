@@ -10,14 +10,8 @@ import java.util.List;
 /**
  * Created by Kassiane Mentz on 14/05/16.
  */
-public interface CalendarioJustificativasDAO {
+public interface CalendarioJustificativasDAO extends GenericDAO<CalendarioJustificativas>{
 
-    boolean salvar(CalendarioJustificativas calendarioJustificativas);
-    boolean deleter(CalendarioJustificativas calendarioJustificativas);
-    boolean atualizar(CalendarioJustificativas calendarioJustificativas);
-    List<CalendarioJustificativas> listar();
-    CalendarioJustificativas procurarPorId(Integer id);
-    List<Calendar> getCalendarioJustificaticasByDate(Calendar inicio, Calendar fim);
-    DatabaseHandler conectar(Context context);
+    List<CalendarioJustificativas> getCalendarioJustificaticasByDate(Calendar inicio, Calendar fim);
 
 }

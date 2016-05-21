@@ -8,25 +8,27 @@ import java.util.List;
 /**
  * Created by Kassiane Mentz on 14/05/16.
  */
-public class PeriodosTrabalhadosDAOImpl extends DaoDB<PeriodosTrabalhados> implements PeriodosTrabalhadosDAO {
+public class PeriodosTrabalhadosDAOImpl implements PeriodosTrabalhadosDAO {
+
+    /*TODO*/
     @Override
     public List<PeriodosTrabalhados> getPeriodosTrabalhadosPorData(Calendar inicio, Calendar fim) {
         return null;
     }
 
     @Override
-    public boolean salvar(PeriodosTrabalhados periodosTrabalhados) {
-        return false;
+    public void salvar(PeriodosTrabalhados entidade) {
+
     }
 
     @Override
-    public boolean deleter(PeriodosTrabalhados periodosTrabalhados) {
-        return false;
+    public void excluir(PeriodosTrabalhados entidade) {
+
     }
 
     @Override
-    public boolean atualizar(PeriodosTrabalhados periodosTrabalhados) {
-        return false;
+    public void atualizar(PeriodosTrabalhados entidade) {
+
     }
 
     @Override

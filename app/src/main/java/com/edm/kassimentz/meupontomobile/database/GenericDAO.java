@@ -10,11 +10,11 @@ import java.util.List;
 /**
  * Created by Kassiane Mentz on 14/05/16.
  */
-public interface DAO<T> {
+public interface GenericDAO<T> {
 
-    public boolean salvar(T t);
-    public boolean deleter(T t);
-    public boolean atualizar(T t);
+    public void salvar(T entidade);
+    public void excluir(T entidade);
+    public void atualizar(T entidade);
     public List<T> listar();
     public T procurarPorId(Integer id);
 }

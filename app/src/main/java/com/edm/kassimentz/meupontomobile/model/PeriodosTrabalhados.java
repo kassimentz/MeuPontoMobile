@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 public class PeriodosTrabalhados  implements Serializable {
 
+	private Integer id;
 	private Calendar data_hora_inicio;
 	private Calendar data_hora_fim;
 
@@ -13,8 +14,15 @@ public class PeriodosTrabalhados  implements Serializable {
 
 	}
 
+	public Integer getId() {
+		return id;
+	}
 
-    public PeriodosTrabalhados(Calendar data_hora_inicio, Calendar data_hora_fim) {
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public PeriodosTrabalhados(Calendar data_hora_inicio, Calendar data_hora_fim) {
         this.data_hora_inicio = data_hora_inicio;
         this.data_hora_fim = data_hora_fim;
     }

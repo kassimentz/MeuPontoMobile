@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Kassiane Mentz on 14/05/16.
  */
-public interface PeriodosTrabalhadosDAO {
+public interface PeriodosTrabalhadosDAO extends GenericDAO<PeriodosTrabalhados>{
 
     public List<PeriodosTrabalhados> getPeriodosTrabalhadosPorData(Calendar inicio, Calendar fim);
 
