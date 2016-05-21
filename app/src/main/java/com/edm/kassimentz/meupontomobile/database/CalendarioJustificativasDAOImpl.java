@@ -52,7 +52,7 @@ public class CalendarioJustificativasDAOImpl extends CalendarioJustificativaDAOB
     public boolean deletar(CalendarioJustificativas calendarioJustificativas) {
 
         SQLiteDatabase banco = databaseHandler.getWritableDatabase();
-        boolean result = banco.delete(tabela, "id_funcionario=?",
+        boolean result = banco.delete(tabela, "id_calendario_justificativas=?",
                 new String[]{calendarioJustificativas.getId().toString()}) > 0;
         banco.close();
         return(result);

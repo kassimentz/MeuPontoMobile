@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Telefone  implements Serializable {
 
+	private Integer id;
 	private int ddd;
 	private int numero;
 
@@ -16,7 +17,11 @@ public class Telefone  implements Serializable {
         this.numero = numero;
     }
 
-    public int getDdd() {
+	public Integer getId() {
+		return id;
+	}
+
+	public int getDdd() {
 		return ddd;
 	}
 
