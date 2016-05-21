@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        funcionarioDAO = new FuncionarioDAOImpl(this.getBaseContext());
+        //funcionarioDAO = new FuncionarioDAOImpl(this.getBaseContext());
+	//subindo as cones de user
 
 
     }
