@@ -1,21 +1,21 @@
-package com.edm.kassimentz.meupontomobile.database;
+package com.edm.kassimentz.meupontomobile.database.banco;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-/**
- * Created by Kassiane Mentz on 14/05/16.
- */
-public class DatabaseHandler extends SQLiteOpenHelper{
+import java.util.ArrayList;
+import java.util.List;
 
-    // All Static variables
-    // Database Version
-    private static final int DATABASE_VERSION = 1;
+public class DB extends SQLiteOpenHelper {
 
-    // Database Name
-    private static final String DATABASE_NAME = "meuPontoMobile";
+    private static String TAG = DB.class.getSimpleName();
+    private static SQLiteDatabase mInstance = null;
+    private static int DATABASE_VERSION = 1;
+    private static String DATABASE_NAME = "meuPontoMobile";
 
     // Table: endereco
     private static final String TABLE_ENDERECO = "CREATE TABLE endereco (id_endereco INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, logradouro VARCHAR (100), numero INTEGER (10), complemento VARCHAR (50), cidade VARCHAR (100), estado CHAR (2), pais CHAR (2));";
@@ -24,7 +24,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     private static final String TABLE_TELEFONE = "CREATE TABLE telefone (id_telefone INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, ddd CHAR (2), telefone CHAR (10));";
 
     // Table: empresa
-    private static final String TABLE_EMPRESA = "CREATE TABLE empresa (id_empresa INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_telefone INTEGER (10) REFERENCES telefone (id_telefone), id_endereco INTEGER (10) REFERENCES endereco (id_endereco), nome VARCHAR (100));";
+    private static final String TABLE_EMPRESA = "CREATE TABLE empresa (id_empresa INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_endereco INTEGER (10) REFERENCES endereco (id_endereco), nome VARCHAR (100));";
 
     //Table: jornada_trabalho
     private static final String TABLE_JORNADA_TRABALHO = "CREATE TABLE jornada_trabalho (id_jornada_trabalho INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, duracao_intervalo INTEGER, tempo_alerta_intervalo INTEGER, hora_inicio_jornada DATETIME, hora_saida_intervalo DATETIME, hora_termino_jornada DATETIME, horas_trabalho_dia DATETIME, dias_trabalho_semana INTEGER, trabalho_domingo BOOLEAN, periodo_trabalho INTEGER);";
@@ -50,45 +50,42 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     // Table: funcionario_telefone
     private static final String TABLE_FUNCIONARIO_TELEFONE = "CREATE TABLE funcionario_telefone (id_funcionario_telefone INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_funcionario INTEGER REFERENCES endereco, id_telefone INTEGER REFERENCES telefone (id_telefone));";
 
+    // Table: empresa_telefones
+    private static final String TABLE_EMPRESA_TELEFONES = "CREATE TABLE empresa_telefones (id_empresa_telefones INTEGER PRIMARY KEY AUTOINCREMENT, id_empresa INTEGER REFERENCES empresa (id_empresa), id_telefone INTEGER REFERENCES telefone (id_telefone));";
 
-    public DatabaseHandler(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+    public synchronized static SQLiteDatabase instance(Context ctx) {
+        if (mInstance == null) {
+            mInstance = new DB(ctx.getApplicationContext()).getWritableDatabase();
+        }
+
+        return mInstance;
+    }
+
+    private DB(Context ctx) {
+        super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         db.execSQL(TABLE_ENDERECO);
-        Log.d("banco", "TABLE_ENDERECO criada");
         db.execSQL(TABLE_TELEFONE);
-        Log.d("banco", "TABLE_TELEFONE criada");
         db.execSQL(TABLE_EMPRESA);
-        Log.d("banco", "TABLE_EMPRESA criada");
         db.execSQL(TABLE_JORNADA_TRABALHO);
-        Log.d("banco", "TABLE_JORNADA_TRABALHO criada");
         db.execSQL(TABLE_FUNCIONARIO);
-        Log.d("banco", "TABLE_FUNCIONARIO criada");
         db.execSQL(TABLE_FUNCIONARIO_ENDERECO);
-        Log.d("banco", "TABLE_FUNCIONARIO_ENDERECO criada");
         db.execSQL(TABLE_FUNCIONARIO_TELEFONE);
-        Log.d("banco", "TABLE_FUNCIONARIO_TELEFONE criada");
         db.execSQL(TABLE_CALENDARIO_JUSTIFICATIVAS);
-        Log.d("banco", "TABLE_CALENDARIO_JUSTIFICATIVAS criada");
         db.execSQL(TABLE_FUNCIONARIO_CALENDARIO_JUSTIFICATIVAS);
-        Log.d("banco", "TABLE_FUNCIONARIO_CALENDARIO_JUSTIFICATIVAS criada");
         db.execSQL(TABLE_PERIODOS_TRABALHADOS);
-        Log.d("banco", "TABLE_PERIODOS_TRABALHADOS criada");
         db.execSQL(TABLE_FUNCIONARIO_PERIODOS_TRABALHADOS);
-        Log.d("banco", "TABLE_FUNCIONARIO_PERIODOS_TRABALHADOS criada");
-
+        db.execSQL(TABLE_EMPRESA_TELEFONES);
     }
 
-    // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS endereco");
-        db.execSQL("DROP TABLE IF EXISTS telefone");  
+        db.execSQL("DROP TABLE IF EXISTS telefone");
         db.execSQL("DROP TABLE IF EXISTS empresa");
         db.execSQL("DROP TABLE IF EXISTS jornada_trabalho");
         db.execSQL("DROP TABLE IF EXISTS funcionario");
@@ -98,9 +95,46 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS funcionario_periodos_trabalhados");
         db.execSQL("DROP TABLE IF EXISTS funcionario_endereco");
         db.execSQL("DROP TABLE IF EXISTS funcionario_telefone");
-
-
-        // Create tables again
+        db.execSQL("DROP TABLE IF EXISTS empresa_telefones");
         onCreate(db);
     }
+
+    public static List<ContentValues> selectRows(Context ctx, String sql, String[] params) {
+        Cursor c = DB.instance(ctx).rawQuery(sql, params);
+
+        List<ContentValues> retVal = new ArrayList<ContentValues>();
+        ContentValues map;
+        if(c.moveToFirst()) {
+            do {
+                map = new ContentValues();
+                DatabaseUtils.cursorRowToContentValues(c, map);
+                retVal.add(map);
+            } while(c.moveToNext());
+        }
+        c.close();
+        return retVal;
+    }
+
+    public static void executeSQL(Context ctx, String sql, String[] params) {
+        DB.instance(ctx).execSQL(sql, params);
+    }
+
+    public static long lastId(Context ctx, String tabela) {
+        List<ContentValues> rows = DB.selectRows(ctx, "SELECT max(_id) as seq FROM " + tabela, null);
+        return rows.get(0).getAsLong("seq");
+    }
+
+
+    /**
+     *
+     * Usage:
+
+     ArrayList<ContentValues> rows = DB.selectRows(this, "SELECT * FROM users WHERE active = ?", new String[] { strActive });
+
+     DB.executeSQL(this,
+     "INSERT INTO users (name, active, email) VALUES (?, ?, ?)",
+     new String[]{ name, active, email });
+
+     */
+
 }
