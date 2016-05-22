@@ -5,16 +5,16 @@ import java.util.List;
 
 public class Funcionario implements Serializable {
 
-	private Integer id_funcionario;
+	private Integer id;
 	private String nome;
 	private String cpf;
 	private String cargo;
 	private Empresa empresa;
 	private JornadaTrabalho jornadaTrabalho;
-	private List<Endereco> endereco;
+	private List<Endereco> enderecos;
 	private List<PeriodosTrabalhados> periodosTrabalhados;
 	private List<CalendarioJustificativas> calendarioJustificativas;
-	private List<Telefone> telefone;
+	private List<Telefone> telefones;
 
 	public Funcionario(){
 
@@ -26,18 +26,18 @@ public class Funcionario implements Serializable {
 		this.cargo = cargo;
 		this.empresa = empresa;
 		this.jornadaTrabalho = jornadaTrabalho;
-		this.endereco = endereco;
+		this.enderecos = endereco;
 		this.periodosTrabalhados = periodosTrabalhados;
 		this.calendarioJustificativas = calendarioJustificativas;
-		this.telefone = telefone;
+		this.telefones = telefone;
 	}
 
 	public Integer getId() {
-		return id_funcionario;
+		return id;
 	}
 
 	public void setId(Integer id) {
-		this.id_funcionario = id;
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -80,12 +80,12 @@ public class Funcionario implements Serializable {
 		this.jornadaTrabalho = jornadaTrabalho;
 	}
 
-	public List<Endereco> getEndereco() {
-		return endereco;
+	public List<Endereco> getEnderecos() {
+		return enderecos;
 	}
 
-	public void setEndereco(List<Endereco> endereco) {
-		this.endereco = endereco;
+	public void setEnderecos(List<Endereco> endereco) {
+		this.enderecos = endereco;
 	}
 
 	public List<PeriodosTrabalhados> getPeriodosTrabalhados() {
@@ -104,11 +104,11 @@ public class Funcionario implements Serializable {
 		this.calendarioJustificativas = calendarioJustificativas;
 	}
 
-	public List<Telefone> getTelefone() {
-		return telefone;
+	public List<Telefone> getTelefones() {
+		return telefones;
 	}
 
-	public void setTelefone(List<Telefone> telefone) {
-		this.telefone = telefone;
+	public void setTelefones(List<Telefone> telefone) {
+		this.telefones = telefone;
 	}
 }

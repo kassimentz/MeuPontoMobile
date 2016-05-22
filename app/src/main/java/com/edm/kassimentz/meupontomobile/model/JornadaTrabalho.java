@@ -36,6 +36,10 @@ public class JornadaTrabalho  implements Serializable {
 		return id;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public int getDuracao_intervalo() {
 		return duracao_intervalo;
 	}

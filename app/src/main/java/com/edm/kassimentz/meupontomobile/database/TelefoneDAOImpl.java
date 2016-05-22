@@ -23,7 +23,7 @@ public class TelefoneDAOImpl implements TelefoneDAO {
 
     @Override
     public void salvar(Telefone telefone) {
-        //CREATE TABLE telefone (id_telefone INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, ddd CHAR (2), telefone CHAR (10));";
+
         DB.executeSQL(this.context,
                 "INSERT INTO "+table+" (ddd, telefone) VALUES (?, ?)",
                 new String[]{

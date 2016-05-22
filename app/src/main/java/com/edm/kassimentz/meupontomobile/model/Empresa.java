@@ -8,7 +8,7 @@ public class Empresa  implements Serializable {
     private int id;
 	private String nome;
 	private Endereco endereco;
-    private List<Telefone> telefone;
+    private List<Telefone> telefones;
 
     public Empresa(){
 
@@ -17,11 +17,15 @@ public class Empresa  implements Serializable {
     public Empresa(String nome, Endereco endereco, List<Telefone> telefone) {
         this.nome = nome;
         this.endereco = endereco;
-        this.telefone = telefone;
+        this.telefones = telefone;
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -40,11 +44,11 @@ public class Empresa  implements Serializable {
         this.endereco = endereco;
     }
 
-    public List<Telefone> getTelefone() {
-        return telefone;
+    public List<Telefone> getTelefones() {
+        return telefones;
     }
 
-    public void setTelefone(List<Telefone> telefone) {
-        this.telefone = telefone;
+    public void setTelefones (List<Telefone> telefone) {
+        this.telefones = telefone;
     }
 }
