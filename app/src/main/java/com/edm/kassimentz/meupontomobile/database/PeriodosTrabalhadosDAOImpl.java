@@ -2,21 +2,21 @@ package com.edm.kassimentz.meupontomobile.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import com.edm.kassimentz.meupontomobile.database.banco.DB;
 import com.edm.kassimentz.meupontomobile.model.PeriodosTrabalhados;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Kassiane Mentz on 14/05/16.
- */
+
 public class PeriodosTrabalhadosDAOImpl implements PeriodosTrabalhadosDAO {
 
     private Context context;
-    private static final String table = "periodos_trabalhados";
+    String table = "periodos_trabalhados";
 
     public PeriodosTrabalhadosDAOImpl(Context ctx){
         this.context = ctx;
@@ -34,8 +34,8 @@ public class PeriodosTrabalhadosDAOImpl implements PeriodosTrabalhadosDAO {
         DB.executeSQL(this.context,
                 "INSERT INTO "+table+" (data_hora_inicio, data_hora_fim) VALUES (?, ?)",
                 new String[]{
-                        String.valueOf(periodosTrabalhados.getData_hora_inicio().getTimeInMillis()),
-                        String.valueOf(periodosTrabalhados.getData_hora_fim().getTimeInMillis())
+                        String.valueOf(periodosTrabalhados.getData_hora_inicio().getTime()),
+                        String.valueOf(periodosTrabalhados.getData_hora_fim().getTime())
                 });
     }
 
@@ -43,7 +43,7 @@ public class PeriodosTrabalhadosDAOImpl implements PeriodosTrabalhadosDAO {
     public void excluir(PeriodosTrabalhados periodosTrabalhados) {
 
         DB.executeSQL(this.context,
-                "DELETE FROM "+table+" WHERE id_periodos_trabalhados = ?",
+                "DELETE FROM "+table+" WHERE id = ?",
                 new String[]{
                         String.valueOf(periodosTrabalhados.getId())
                 });
@@ -53,10 +53,10 @@ public class PeriodosTrabalhadosDAOImpl implements PeriodosTrabalhadosDAO {
     public void atualizar(PeriodosTrabalhados periodosTrabalhados) {
 
         DB.executeSQL(this.context,
-                "UPDATE "+table+" SET data_hora_inicio = ?, data_hora_fim = ? WHERE id_periodos_trabalhados = ?",
+                "UPDATE "+table+" SET data_hora_inicio = ?, data_hora_fim = ? WHERE id = ?",
                 new String[]{
-                        String.valueOf(periodosTrabalhados.getData_hora_inicio().getTimeInMillis()),
-                        String.valueOf(periodosTrabalhados.getData_hora_fim().getTimeInMillis()),
+                        String.valueOf(periodosTrabalhados.getData_hora_inicio().getTime()),
+                        String.valueOf(periodosTrabalhados.getData_hora_fim().getTime()),
                         String.valueOf(periodosTrabalhados.getId())
                 });
     }
@@ -70,16 +70,9 @@ public class PeriodosTrabalhadosDAOImpl implements PeriodosTrabalhadosDAO {
         for (ContentValues cv: rows) {
             PeriodosTrabalhados periodosTrabalhados = new PeriodosTrabalhados();
 
-            periodosTrabalhados.setId(cv.getAsInteger("id_periodos_trabalhados"));
-
-            Calendar dataInicio = Calendar.getInstance();
-            dataInicio.setTimeInMillis(cv.getAsLong("data_hora_inicio"));
-            periodosTrabalhados.setData_hora_inicio(dataInicio);
-
-            Calendar dataFim = Calendar.getInstance();
-            dataFim.setTimeInMillis(cv.getAsLong("data_hora_fim"));
-            periodosTrabalhados.setData_hora_fim(dataFim);
-
+            periodosTrabalhados.setId(cv.getAsInteger("id"));
+            periodosTrabalhados.setData_hora_inicio(new Date(cv.getAsLong("data_hora_inicio")));
+            periodosTrabalhados.setData_hora_fim(new Date(cv.getAsLong("data_hora_fim")));
             periodosTrabalhadosList.add(periodosTrabalhados);
         }
 
@@ -89,20 +82,13 @@ public class PeriodosTrabalhadosDAOImpl implements PeriodosTrabalhadosDAO {
     @Override
     public PeriodosTrabalhados procurarPorId(Integer id) {
 
-        ContentValues cv = DB.byId(this.context, table,
-                new String[]{"id_calendario_justificativas, data_hora, observacao, justificativa"},"id_calendario_justificativas",id);
+        ContentValues cv = DB.byId(this.context, table, id);
 
         PeriodosTrabalhados periodosTrabalhados = new PeriodosTrabalhados();
 
-        periodosTrabalhados.setId(cv.getAsInteger("id_periodos_trabalhados"));
-
-        Calendar dataInicio = Calendar.getInstance();
-        dataInicio.setTimeInMillis(cv.getAsLong("data_hora_inicio"));
-        periodosTrabalhados.setData_hora_inicio(dataInicio);
-
-        Calendar dataFim = Calendar.getInstance();
-        dataFim.setTimeInMillis(cv.getAsLong("data_hora_fim"));
-        periodosTrabalhados.setData_hora_fim(dataFim);
+        periodosTrabalhados.setId(cv.getAsInteger("id"));
+        periodosTrabalhados.setData_hora_inicio(new Date(cv.getAsLong("data_hora_inicio")));
+        periodosTrabalhados.setData_hora_fim(new Date(cv.getAsLong("data_hora_fim")));
 
         return periodosTrabalhados;
     }

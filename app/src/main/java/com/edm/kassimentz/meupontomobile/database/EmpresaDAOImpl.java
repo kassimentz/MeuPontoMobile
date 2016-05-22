@@ -19,11 +19,10 @@ public class EmpresaDAOImpl implements EmpresaDAO {
     private Context context;
 
     private static final String table = "empresa";
-    private static final String table2 = "telefone";
-    private static final String table3 = "empresa_telefones";
 
     private long lastEmpresaID;
     private long lastTelefoneID;
+    private long lastEnderecoID;
 
 
     EnderecoDAOImpl endDao;
@@ -32,42 +31,41 @@ public class EmpresaDAOImpl implements EmpresaDAO {
     public EmpresaDAOImpl(Context ctx){
         this.context = ctx;
         endDao = new EnderecoDAOImpl(this.context);
-
+        telDao = new TelefoneDAOImpl(this.context);
     }
 
     @Override
     public void salvar(Empresa empresa) {
 
-        List<Telefone> telefonesEmpresa = empresa.getTelefones();
-
-
         endDao.salvar(empresa.getEndereco());
+        this.setLastEnderecoID(DB.lastId(this.context, "endereco"));
 
 
         DB.executeSQL(this.context,
-                "INSERT INTO "+table+" (id_endereco, nome) VALUES (?, ?)",
+                "INSERT INTO " + table + " (id_endereco, nome) VALUES (?, ?)",
                 new String[]{
-                    String.valueOf(empresa.getEndereco().getId()),
-                    empresa.getNome()
+                        String.valueOf(this.getLastEnderecoID()),
+                        empresa.getNome()
                 });
 
-        this.setLastEmpresaID(DB.lastId(this.context, table));
+        this.setLastEmpresaID(DB.lastId(this.context, "empresa"));
 
+        if(empresa.getTelefones() != null) {
+            for (Telefone t : empresa.getTelefones()) {
 
-        for (Telefone t: telefonesEmpresa) {
+                telDao.salvar(t);
+                this.setLastTelefoneID(DB.lastId(this.context, "telefone"));
 
-
-            telDao.salvar(t);
-
-            this.setLastTelefoneID(DB.lastId(this.context, table2));
-
-            DB.executeSQL(this.context,
-                    "INSERT INTO "+table3+" (id_empresa, id_telefone) VALUES (?, ?)",
-                    new String[]{
-                            String.valueOf(this.getLastEmpresaID()),
-                            String.valueOf(this.getLastTelefoneID())
-                    });
+                DB.executeSQL(this.context,
+                        "INSERT INTO empresa_telefones (id_empresa, id_telefone) VALUES (?, ?)",
+                        new String[]{
+                                String.valueOf(this.getLastEmpresaID()),
+                                String.valueOf(this.getLastTelefoneID())
+                        });
+            }
         }
+
+
     }
 
     @Override
@@ -81,13 +79,13 @@ public class EmpresaDAOImpl implements EmpresaDAO {
         }
 
         DB.executeSQL(this.context,
-                "DELETE FROM "+table3+" WHERE id_empresa = ?",
+                "DELETE FROM empresa_telefones WHERE id = ?",
                 new String[]{
                         String.valueOf(empresa.getId())
                 });
 
         DB.executeSQL(this.context,
-                "DELETE FROM "+table+" WHERE id_empresa = ?",
+                "DELETE FROM "+table+" WHERE id = ?",
                 new String[]{
                         String.valueOf(empresa.getId())
                 });
@@ -104,7 +102,7 @@ public class EmpresaDAOImpl implements EmpresaDAO {
         }
 
         DB.executeSQL(this.context,
-                "UPDATE "+table+" SET id_endereco = ?, nome = ? WHERE id_empresa = ?",
+                "UPDATE "+table+" SET id_endereco = ?, nome = ? WHERE id = ?",
                 new String[]{
                         String.valueOf(empresa.getEndereco().getId()),
                         empresa.getNome(),
@@ -121,7 +119,7 @@ public class EmpresaDAOImpl implements EmpresaDAO {
         for (ContentValues cv: rows) {
 
             Empresa empresa = new Empresa();
-            empresa.setId(cv.getAsInteger("id_empresa"));
+            empresa.setId(cv.getAsInteger("id"));
             Endereco endereco = endDao.procurarPorId(cv.getAsInteger("id_endereco"));
             empresa.setEndereco(endereco);
             empresa.setTelefones(this.getTelefones(Integer.valueOf("id_empresa")));
@@ -135,14 +133,13 @@ public class EmpresaDAOImpl implements EmpresaDAO {
     @Override
     public Empresa procurarPorId(Integer id) {
 
-        ContentValues cv = DB.byId(this.context, table,
-                new String[]{"id_empresa, id_endereco, nome"},"id_empresa",id);
+        ContentValues cv = DB.byId(this.context,table, id);
 
         Empresa empresa = new Empresa();
-        empresa.setId(cv.getAsInteger("id_empresa"));
+        empresa.setId(cv.getAsInteger("id"));
         Endereco endereco = endDao.procurarPorId(cv.getAsInteger("id_endereco"));
         empresa.setEndereco(endereco);
-        empresa.setTelefones(this.getTelefones(Integer.valueOf("id_empresa")));
+        empresa.setTelefones(this.getTelefones(id));
 
         return empresa;
     }
@@ -174,5 +171,13 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 
     private void setLastTelefoneID(long lastTelefoneID) {
         this.lastTelefoneID = lastTelefoneID;
+    }
+
+    public long getLastEnderecoID() {
+        return lastEnderecoID;
+    }
+
+    public void setLastEnderecoID(long lastEnderecoID) {
+        this.lastEnderecoID = lastEnderecoID;
     }
 }

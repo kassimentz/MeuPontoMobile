@@ -36,7 +36,7 @@ public class TelefoneDAOImpl implements TelefoneDAO {
     public void excluir(Telefone telefone) {
 
         DB.executeSQL(this.context,
-                "DELETE FROM "+table+" WHERE id_telefone = ?",
+                "DELETE FROM "+table+" WHERE id = ?",
                 new String[]{
                         String.valueOf(telefone.getId())
                 });
@@ -46,7 +46,7 @@ public class TelefoneDAOImpl implements TelefoneDAO {
     public void atualizar(Telefone telefone) {
 
         DB.executeSQL(this.context,
-                "UPDATE "+table+" SET ddd = ?, telefone = ? WHERE id_telefone = ?",
+                "UPDATE "+table+" SET ddd = ?, telefone = ? WHERE id = ?",
                 new String[]{
                         telefone.getDdd(),
                         telefone.getNumero(),
@@ -62,7 +62,7 @@ public class TelefoneDAOImpl implements TelefoneDAO {
         List<ContentValues> rows = DB.selectRows(this.context, "SELECT * FROM "+table, new String[]{ });
         for (ContentValues cv: rows) {
             Telefone tel = new Telefone();
-            tel.setId(cv.getAsInteger("id_telefone"));
+            tel.setId(cv.getAsInteger("id"));
             tel.setDdd(cv.getAsString("ddd"));
             tel.setNumero(cv.getAsString("numero"));
 
@@ -75,12 +75,11 @@ public class TelefoneDAOImpl implements TelefoneDAO {
     @Override
     public Telefone procurarPorId(Integer id) {
 
-        ContentValues cv = DB.byId(this.context, table,
-                new String[]{"id_telefone, ddd, numero"},"id_telefone",id);
+        ContentValues cv = DB.byId(this.context, table, id);
 
         Telefone tel = new Telefone();
 
-        tel.setId(cv.getAsInteger("id_telefone"));
+        tel.setId(cv.getAsInteger("id"));
         tel.setDdd(cv.getAsString("ddd"));
         tel.setNumero(cv.getAsString("numero"));
 

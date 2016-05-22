@@ -2,6 +2,7 @@ package com.edm.kassimentz.meupontomobile.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import com.edm.kassimentz.meupontomobile.database.banco.DB;
 import com.edm.kassimentz.meupontomobile.model.CalendarioJustificativas;
@@ -24,7 +25,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
 
     EnderecoDAOImpl enderecoDAO;
     TelefoneDAOImpl telefoneDAO;
-    PeriodosTrabalhadosDAO periodosTrabalhadosDAO;
+    PeriodosTrabalhadosDAOImpl periodosTrabalhadosDAO;
     CalendarioJustificativasDAOImpl calendarioJustificativasDAO;
     EmpresaDAOImpl empresaDao;
     JornadaTrabalhoDAOImpl jornadaTrabalhoDao;
@@ -34,6 +35,8 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
     private long lastTelefoneID;
     private long lastPeriodosTrabalhadosID;
     private long lastCalendarioJustificativasID;
+    private long lastEmpresaID;
+    private long lastJornadaTrabalhoID;
 
     public FuncionarioDAOImpl(Context ctx){
         this.context = ctx;
@@ -42,67 +45,88 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
         periodosTrabalhadosDAO = new PeriodosTrabalhadosDAOImpl(this.context);
         empresaDao = new EmpresaDAOImpl(this.context);
         jornadaTrabalhoDao = new JornadaTrabalhoDAOImpl(this.context);
+        calendarioJustificativasDAO = new CalendarioJustificativasDAOImpl(this.context);
     }
 
     @Override
     public void salvar(Funcionario funcionario) {
 
+        if(funcionario.getEmpresa() != null){
+            empresaDao.salvar(funcionario.getEmpresa());
+            this.setLastEmpresaID(DB.lastId(this.context, "empresa"));
+        }
+
+        if(funcionario.getJornadaTrabalho() != null) {
+            jornadaTrabalhoDao.salvar(funcionario.getJornadaTrabalho());
+            this.setLastJornadaTrabalhoID(DB.lastId(this.context, "jornada_trabalho"));
+        }
+
         DB.executeSQL(this.context,
-                "INSERT INTO "+table+" (nome, cpf, cargo) VALUES (?, ?, ?)",
+                "INSERT INTO "+table+" (nome, cpf, cargo, id_empresa, id_jornada_trabalho) VALUES (?, ?, ?, ?, ?)",
                 new String[]{
                         funcionario.getNome(),
                         funcionario.getCpf(),
-                        funcionario.getCargo()
+                        funcionario.getCargo(),
+                        String.valueOf(this.getLastEmpresaID()),
+                        String.valueOf(this.getLastJornadaTrabalhoID())
                 });
         this.setLastFuncionarioID(DB.lastId(this.context, table));
 
-        for (Endereco end :funcionario.getEnderecos()) {
-            enderecoDAO.salvar(end);
+        if(funcionario.getEnderecos() != null) {
+            for (Endereco end : funcionario.getEnderecos()) {
+                enderecoDAO.salvar(end);
+                this.setLastEnderecoID(DB.lastId(this.context, "endereco"));
 
-            DB.executeSQL(this.context,
-                    "INSERT INTO funcionario_endereco (id_funcionario, id_endereco) VALUES (?, ?)",
-                    new String[]{
-                            String.valueOf(this.getLastFuncionarioID()),
-                            String.valueOf(this.getLastEnderecoID())
-                    });
+                DB.executeSQL(this.context,
+                        "INSERT INTO funcionario_endereco (id_funcionario, id_endereco) VALUES (?, ?)",
+                        new String[]{
+                                String.valueOf(this.getLastFuncionarioID()),
+                                String.valueOf(this.getLastEnderecoID())
+                        });
+            }
         }
 
-        for(Telefone tel : funcionario.getTelefones()){
-            telefoneDAO.salvar(tel);
+        if(funcionario.getTelefones() != null) {
+            for (Telefone tel : funcionario.getTelefones()) {
+                telefoneDAO.salvar(tel);
+                this.setLastTelefoneID(DB.lastId(this.context, "telefone"));
 
-            DB.executeSQL(this.context,
-                    "INSERT INTO funcionario_telefone (id_funcionario, id_telefone) VALUES (?, ?)",
-                    new String[]{
-                            String.valueOf(this.getLastFuncionarioID()),
-                            String.valueOf(this.getLastTelefoneID())
-                    });
+                DB.executeSQL(this.context,
+                        "INSERT INTO funcionario_telefone (id_funcionario, id_telefone) VALUES (?, ?)",
+                        new String[]{
+                                String.valueOf(this.getLastFuncionarioID()),
+                                String.valueOf(this.getLastTelefoneID())
+                        });
+            }
         }
 
+        if(funcionario.getPeriodosTrabalhados() != null) {
+            for (PeriodosTrabalhados per : funcionario.getPeriodosTrabalhados()) {
+                periodosTrabalhadosDAO.salvar(per);
+                this.setLastPeriodosTrabalhadosID(DB.lastId(this.context, "periodos_trabalhados"));
 
-        for(PeriodosTrabalhados per : funcionario.getPeriodosTrabalhados()){
-            periodosTrabalhadosDAO.salvar(per);
-
-            DB.executeSQL(this.context,
-                    "INSERT INTO funcionario_periodos_trabalhados (id_funcionario, id_periodos_trabalhados) VALUES (?, ?)",
-                    new String[]{
-                            String.valueOf(this.getLastFuncionarioID()),
-                            String.valueOf(this.getLastPeriodosTrabalhadosID())
-                    });
+                DB.executeSQL(this.context,
+                        "INSERT INTO funcionario_periodos_trabalhados (id_funcionario, id_periodos_trabalhados) VALUES (?, ?)",
+                        new String[]{
+                                String.valueOf(this.getLastFuncionarioID()),
+                                String.valueOf(this.getLastPeriodosTrabalhadosID())
+                        });
+            }
         }
 
-        for(CalendarioJustificativas cal : funcionario.getCalendarioJustificativas()){
-            calendarioJustificativasDAO.salvar(cal);
+        if(funcionario.getCalendarioJustificativas() != null) {
+            for (CalendarioJustificativas cal : funcionario.getCalendarioJustificativas()) {
+                calendarioJustificativasDAO.salvar(cal);
+                this.setLastCalendarioJustificativasID(DB.lastId(this.context, "calendario_justificativas"));
 
-            DB.executeSQL(this.context,
-                    "INSERT INTO funcionario_calendario_justificativas (id_funcionario, id_calendario_justificativas) VALUES (?, ?)",
-                    new String[]{
-                            String.valueOf(this.getLastFuncionarioID()),
-                            String.valueOf(this.getLastCalendarioJustificativasID())
-                    });
+                DB.executeSQL(this.context,
+                        "INSERT INTO funcionario_calendario_justificativas (id_funcionario, id_calendario_justificativas) VALUES (?, ?)",
+                        new String[]{
+                                String.valueOf(this.getLastFuncionarioID()),
+                                String.valueOf(this.getLastCalendarioJustificativasID())
+                        });
+            }
         }
-
-        empresaDao.salvar(funcionario.getEmpresa());
-        jornadaTrabalhoDao.salvar(funcionario.getJornadaTrabalho());
 
     }
 
@@ -129,31 +153,31 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
         jornadaTrabalhoDao.excluir(funcionario.getJornadaTrabalho());
 
         DB.executeSQL(this.context,
-                "DELETE FROM funcionario_endereco WHERE id_funcionario = ?",
+                "DELETE FROM funcionario_endereco WHERE id = ?",
                 new String[]{
                         String.valueOf(funcionario.getId())
                 });
 
         DB.executeSQL(this.context,
-                "DELETE FROM funcionario_telefone WHERE id_funcionario = ?",
+                "DELETE FROM funcionario_telefone WHERE id = ?",
                 new String[]{
                         String.valueOf(funcionario.getId())
                 });
 
         DB.executeSQL(this.context,
-                "DELETE FROM funcionario_periodos_trabalhados WHERE id_funcionario = ?",
+                "DELETE FROM funcionario_periodos_trabalhados WHERE id = ?",
                 new String[]{
                         String.valueOf(funcionario.getId())
                 });
 
         DB.executeSQL(this.context,
-                "DELETE FROM funcionario_calendario_justificativas WHERE id_funcionario = ?",
+                "DELETE FROM funcionario_calendario_justificativas WHERE id = ?",
                 new String[]{
                         String.valueOf(funcionario.getId())
                 });
 
         DB.executeSQL(this.context,
-                "DELETE FROM "+table+" WHERE id_funcionario = ?",
+                "DELETE FROM "+table+" WHERE id = ?",
                 new String[]{
                         String.valueOf(funcionario.getId())
                 });
@@ -182,11 +206,13 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
         jornadaTrabalhoDao.atualizar(funcionario.getJornadaTrabalho());
 
         DB.executeSQL(this.context,
-                "UPDATE "+table+" SET ddd = ?, telefone = ? WHERE id_telefone = ?",
+                "UPDATE "+table+" SET nome = ?, cpf = ?, cargo = ? , id_empresa = ?, id_jornada_trabalho = ? WHERE id = ?",
                 new String[]{
                         funcionario.getNome(),
                         funcionario.getCpf(),
                         funcionario.getCargo(),
+                        String.valueOf(funcionario.getEmpresa().getId()),
+                        String.valueOf(funcionario.getJornadaTrabalho().getId()),
                         String.valueOf(funcionario.getId())
                 });
     }
@@ -238,7 +264,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
     @Override
     public List<Telefone> getTelefones(Integer id) {
 
-        List<ContentValues> rows = DB.selectRows(this.context,"SELECT * FROM id_funcionario_telefone WHERE id_funcionario = ?", new String[]{id.toString()});
+        List<ContentValues> rows = DB.selectRows(this.context,"SELECT * FROM funcionario_telefone WHERE id_funcionario = ?", new String[]{id.toString()});
         List<Telefone> listaTelefones = new ArrayList<Telefone>();
 
         for (ContentValues cv : rows){
@@ -259,16 +285,16 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
         for (ContentValues cv: rows) {
 
             Funcionario funcionario = new Funcionario();
-            funcionario.setId(cv.getAsInteger("id_funcionario"));
+            funcionario.setId(cv.getAsInteger("id"));
             funcionario.setNome(cv.getAsString("nome"));
             funcionario.setCpf(cv.getAsString("cpf"));
             funcionario.setCargo(cv.getAsString("cargo"));
             funcionario.setEmpresa(empresaDao.procurarPorId(cv.getAsInteger("id_empresa")));
             funcionario.setJornadaTrabalho(jornadaTrabalhoDao.procurarPorId(cv.getAsInteger("id_jornada_trabalho")));
-            funcionario.setEnderecos(this.getEnderecos(cv.getAsInteger("id_funcionario")));
-            funcionario.setTelefones(this.getTelefones(cv.getAsInteger("id_funcionario")));
-            funcionario.setPeriodosTrabalhados(this.getPeriodosTrabalhados(cv.getAsInteger("id_funcionario")));
-            funcionario.setCalendarioJustificativas(this.getCalendarioJustificativas(cv.getAsInteger("id_funcionario")));
+            funcionario.setEnderecos(this.getEnderecos(cv.getAsInteger("id")));
+            funcionario.setTelefones(this.getTelefones(cv.getAsInteger("id")));
+            funcionario.setPeriodosTrabalhados(this.getPeriodosTrabalhados(cv.getAsInteger("id")));
+            funcionario.setCalendarioJustificativas(this.getCalendarioJustificativas(cv.getAsInteger("id")));
 
             funcionarioList.add(funcionario);
 
@@ -280,20 +306,19 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
     @Override
     public Funcionario procurarPorId(Integer id) {
 
-        ContentValues cv = DB.byId(this.context, table,
-                new String[]{"id_funcionario, nome, cpf, cargo, id_empresa, id_jornada_trabalho"},"id_funcionario",id);
+        ContentValues cv = DB.byId(this.context, table, id);
 
         Funcionario funcionario = new Funcionario();
-        funcionario.setId(cv.getAsInteger("id_funcionario"));
+        funcionario.setId(cv.getAsInteger("id"));
         funcionario.setNome(cv.getAsString("nome"));
         funcionario.setCpf(cv.getAsString("cpf"));
         funcionario.setCargo(cv.getAsString("cargo"));
         funcionario.setEmpresa(empresaDao.procurarPorId(cv.getAsInteger("id_empresa")));
         funcionario.setJornadaTrabalho(jornadaTrabalhoDao.procurarPorId(cv.getAsInteger("id_jornada_trabalho")));
-        funcionario.setEnderecos(this.getEnderecos(cv.getAsInteger("id_funcionario")));
-        funcionario.setTelefones(this.getTelefones(cv.getAsInteger("id_funcionario")));
-        funcionario.setPeriodosTrabalhados(this.getPeriodosTrabalhados(cv.getAsInteger("id_funcionario")));
-        funcionario.setCalendarioJustificativas(this.getCalendarioJustificativas(cv.getAsInteger("id_funcionario")));
+        funcionario.setEnderecos(this.getEnderecos(cv.getAsInteger("id")));
+        funcionario.setTelefones(this.getTelefones(cv.getAsInteger("id")));
+        funcionario.setPeriodosTrabalhados(this.getPeriodosTrabalhados(cv.getAsInteger("id")));
+        funcionario.setCalendarioJustificativas(this.getCalendarioJustificativas(cv.getAsInteger("id")));
 
         return funcionario;
     }
@@ -351,5 +376,21 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
 
     public void setLastCalendarioJustificativasID(long lastCalendarioJustificativasID) {
         this.lastCalendarioJustificativasID = lastCalendarioJustificativasID;
+    }
+
+    public long getLastEmpresaID() {
+        return lastEmpresaID;
+    }
+
+    public void setLastEmpresaID(long lastEmpresaID) {
+        this.lastEmpresaID = lastEmpresaID;
+    }
+
+    public long getLastJornadaTrabalhoID() {
+        return lastJornadaTrabalhoID;
+    }
+
+    public void setLastJornadaTrabalhoID(long lastJornadaTrabalhoID) {
+        this.lastJornadaTrabalhoID = lastJornadaTrabalhoID;
     }
 }

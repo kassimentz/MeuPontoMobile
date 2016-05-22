@@ -7,6 +7,7 @@ import com.edm.kassimentz.meupontomobile.model.CalendarioJustificativas;
 import com.edm.kassimentz.meupontomobile.model.Justificativa;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class CalendarioJustificativasDAOImpl implements CalendarioJustificativas
         DB.executeSQL(this.context,
                 "INSERT INTO "+table+" (data_hora, observacao, justificativa) VALUES (?, ?, ?)",
                 new String[]{
-                        String.valueOf(calendarioJustificativas.getData_hora().getTimeInMillis()),
+                        String.valueOf(calendarioJustificativas.getData_hora().getTime()),
                         calendarioJustificativas.getObservacao(),
                         String.valueOf(calendarioJustificativas.getJustificativa().ordinal())
                 });
@@ -43,7 +44,7 @@ public class CalendarioJustificativasDAOImpl implements CalendarioJustificativas
     public void excluir(CalendarioJustificativas calendarioJustificativas) {
 
         DB.executeSQL(this.context,
-                "DELETE FROM "+table+" WHERE id_calendario_justificativas = ?",
+                "DELETE FROM "+table+" WHERE id = ?",
                 new String[]{
                         String.valueOf(calendarioJustificativas.getId())
                 });
@@ -54,9 +55,9 @@ public class CalendarioJustificativasDAOImpl implements CalendarioJustificativas
     public void atualizar(CalendarioJustificativas calendarioJustificativas) {
 
         DB.executeSQL(this.context,
-                "UPDATE "+table+" SET data_hora = ?, observacao = ?, justificativa = ? WHERE id_calendario_justificativas = ?",
+                "UPDATE "+table+" SET data_hora = ?, observacao = ?, justificativa = ? WHERE id = ?",
                 new String[]{
-                        String.valueOf(calendarioJustificativas.getData_hora().getTimeInMillis()),
+                        String.valueOf(calendarioJustificativas.getData_hora().getTime()),
                         calendarioJustificativas.getObservacao(),
                         String.valueOf(calendarioJustificativas.getJustificativa().ordinal()),
                         String.valueOf(calendarioJustificativas.getId())
@@ -72,12 +73,8 @@ public class CalendarioJustificativasDAOImpl implements CalendarioJustificativas
         for (ContentValues cv: rows) {
             CalendarioJustificativas calendarioJustificativa = new CalendarioJustificativas();
 
-            calendarioJustificativa.setId(cv.getAsInteger("id_calendario_justificativas"));
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(cv.getAsLong("data_hora"));
-
-            calendarioJustificativa.setData_hora(calendar);
+            calendarioJustificativa.setId(cv.getAsInteger("id"));
+            calendarioJustificativa.setData_hora(new Date(cv.getAsLong("data_hora")));
             calendarioJustificativa.setObservacao(cv.getAsString("observacao"));
 
             Justificativa j = Justificativa.valueOf(cv.getAsString("justificativa"));
@@ -92,21 +89,16 @@ public class CalendarioJustificativasDAOImpl implements CalendarioJustificativas
     @Override
     public CalendarioJustificativas procurarPorId(Integer id) {
 
-        ContentValues cv = DB.byId(this.context, table,
-                new String[]{"id_calendario_justificativas, data_hora, observacao, justificativa"},"id_calendario_justificativas",id);
+        ContentValues cv = DB.byId(this.context, table, id);
 
         CalendarioJustificativas calendarioJustificativa = new CalendarioJustificativas();
 
-        calendarioJustificativa.setId(cv.getAsInteger("id_calendario_justificativas"));
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(cv.getAsLong("data_hora"));
-
-        calendarioJustificativa.setData_hora(calendar);
+        calendarioJustificativa.setId(cv.getAsInteger("id"));
+        calendarioJustificativa.setData_hora(new Date(cv.getAsLong("data_hora")));
         calendarioJustificativa.setObservacao(cv.getAsString("observacao"));
 
-        Justificativa j = Justificativa.valueOf(cv.getAsString("justificativa"));
-        calendarioJustificativa.setJustificativa(j);
+//        Justificativa j = Justificativa.valueOf(cv.getAsString("justificativa"));
+//        calendarioJustificativa.setJustificativa(j);
 
         return calendarioJustificativa;
     }

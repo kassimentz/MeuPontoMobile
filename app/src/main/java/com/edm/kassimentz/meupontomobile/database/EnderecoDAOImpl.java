@@ -42,7 +42,7 @@ public class EnderecoDAOImpl implements EnderecoDAO {
     public void excluir(Endereco endereco) {
 
         DB.executeSQL(this.context,
-                "DELETE FROM "+table+" WHERE id_endereco = ?",
+                "DELETE FROM "+table+" WHERE id = ?",
                 new String[]{
                         String.valueOf(endereco.getId())
                 });
@@ -52,7 +52,7 @@ public class EnderecoDAOImpl implements EnderecoDAO {
     public void atualizar(Endereco endereco) {
 
         DB.executeSQL(this.context,
-                "UPDATE "+table+" SET logradouro = ?, cep = ?, numero = ?, complemento = ?, cidade = ?, estado = ?, pais = ? WHERE id_endereco = ?",
+                "UPDATE "+table+" SET logradouro = ?, cep = ?, numero = ?, complemento = ?, cidade = ?, estado = ?, pais = ? WHERE id = ?",
                 new String[]{
                         endereco.getLogradouro(),
                         String.valueOf(endereco.getCep()),
@@ -74,7 +74,7 @@ public class EnderecoDAOImpl implements EnderecoDAO {
         for (ContentValues cv: rows){
 
             Endereco end = new Endereco();
-            end.setId(cv.getAsInteger("id_endereco"));
+            end.setId(cv.getAsInteger("id"));
             end.setLogradouro(cv.getAsString("logradouro"));
             end.setCep(cv.getAsInteger("cep"));
             end.setNumero(cv.getAsInteger("numero"));
@@ -92,11 +92,10 @@ public class EnderecoDAOImpl implements EnderecoDAO {
     @Override
     public Endereco procurarPorId(Integer id) {
 
-        ContentValues cv = DB.byId(this.context, table,
-                new String[]{"id_endereco, logradouro, cep, numero, complemento, cidade, estado, pais"},"id_endereco",id);
+        ContentValues cv = DB.byId(this.context, table, id);
 
         Endereco end = new Endereco();
-        end.setId(cv.getAsInteger("id_endereco"));
+        end.setId(cv.getAsInteger("id"));
         end.setLogradouro(cv.getAsString("logradouro"));
         end.setCep(cv.getAsInteger("cep"));
         end.setNumero(cv.getAsInteger("numero"));

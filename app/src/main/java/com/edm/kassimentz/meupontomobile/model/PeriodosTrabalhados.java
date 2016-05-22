@@ -3,43 +3,53 @@ package com.edm.kassimentz.meupontomobile.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 
-public class PeriodosTrabalhados  implements Serializable {
+public class PeriodosTrabalhados implements Serializable {
 
 	private Integer id;
-	private Calendar data_hora_inicio;
-	private Calendar data_hora_fim;
+	private Date data_hora_inicio;
+	private Date data_hora_fim;
 
 	public PeriodosTrabalhados(){
 
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public PeriodosTrabalhados(Calendar data_hora_inicio, Calendar data_hora_fim) {
+	public PeriodosTrabalhados(Date data_hora_inicio, Date data_hora_fim) {
         this.data_hora_inicio = data_hora_inicio;
         this.data_hora_fim = data_hora_fim;
     }
 
-    public Calendar getData_hora_inicio() {
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Date getData_hora_inicio() {
 		return data_hora_inicio;
 	}
 
-	public void setData_hora_inicio(Calendar data_hora_inicio) {
+	public void setData_hora_inicio(Date data_hora_inicio) {
 		this.data_hora_inicio = data_hora_inicio;
 	}
 
-	public Calendar getData_hora_fim() {
+	public Date getData_hora_fim() {
 		return data_hora_fim;
 	}
 
-	public void setData_hora_fim(Calendar data_hora_fim) {
+	public void setData_hora_fim(Date data_hora_fim) {
 		this.data_hora_fim = data_hora_fim;
 	}
+
+    @Override
+    public String toString() {
+        return "PeriodosTrabalhados{" +
+                "id=" + id +
+                ", data_hora_inicio=" + data_hora_inicio +
+                ", data_hora_fim=" + data_hora_fim +
+                '}';
+    }
 }

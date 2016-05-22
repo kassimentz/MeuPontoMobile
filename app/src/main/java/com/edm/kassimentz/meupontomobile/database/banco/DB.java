@@ -25,19 +25,19 @@ public class DB extends SQLiteOpenHelper {
     static String TABLE_EMPRESA_TELEFONES = "CREATE TABLE empresa_telefones (id INTEGER PRIMARY KEY AUTOINCREMENT, id_empresa INTEGER, id_telefone INTEGER);";
 
     //-- Table: jornada_trabalho
-    static String TABLE_JORNADA_TRABALHO = "CREATE TABLE jornada_trabalho (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, duracao_intervalo INTEGER, tempo_alerta_intervalo INTEGER, hora_inicio_jornada DATETIME, hora_saida_intervalo DATETIME, hora_termino_jornada DATETIME, horas_trabalho_dia DOUBLE, dias_trabalho_semana INTEGER, trabalho_domingo BOOLEAN, periodo_trabalho INTEGER);";
+    static String TABLE_JORNADA_TRABALHO = "CREATE TABLE jornada_trabalho (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, duracao_intervalo INTEGER, tempo_alerta_intervalo INTEGER, hora_inicio_jornada BIGINT, hora_saida_intervalo BIGINT, hora_termino_jornada BIGINT, horas_trabalho_dia DOUBLE, dias_trabalho_semana INTEGER, trabalho_domingo BOOLEAN, periodo_trabalho INTEGER);";
 
     //-- Table: funcionario_calendario_justificativas
     static String TABLE_FUNCIONARIO_CALENDARIO_JUSTIFICATIVAS = "CREATE TABLE funcionario_calendario_justificativas (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_funcionario INTEGER, id_calendario_justificativas INTEGER);";
 
     //-- Table: calendario_justificativas
-    static  String TABLE_CALENDARIO_JUSTIFICATIVAS = "CREATE TABLE calendario_justificativas (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, data_hora DATETIME, observacao BLOB, justificativa INTEGER);";
+    static  String TABLE_CALENDARIO_JUSTIFICATIVAS = "CREATE TABLE calendario_justificativas (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, data_hora BIGINT, observacao BLOB, justificativa INTEGER);";
 
     //-- Table: funcionario_telefone
     static String TABLE_FUNCIONARIO_TELEFONE = "CREATE TABLE funcionario_telefone (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_funcionario INTEGER, id_telefone INTEGER);";
 
     //-- Table: empresa
-    static String TABLE_EMPRESA = "CREATE TABLE empresa (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_telefone INTEGER (10), id_endereco INTEGER (10), nome VARCHAR (100));";
+    static String TABLE_EMPRESA = "CREATE TABLE empresa (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_endereco INTEGER (10), nome VARCHAR (100));";
 
     //-- Table: funcionario
     static String TABLE_FUNCIONARIO = "CREATE TABLE funcionario (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome VARCHAR (200), cpf VARCHAR (12), cargo VARCHAR (100), id_empresa INTEGER, id_jornada_trabalho INTEGER);";
@@ -52,7 +52,7 @@ public class DB extends SQLiteOpenHelper {
     static String TABLE_ENDERECO = "CREATE TABLE endereco (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, cep INTEGER(10), logradouro VARCHAR (100), numero INTEGER (10), complemento VARCHAR (50), cidade VARCHAR (100), estado CHAR (2), pais CHAR (2));";
 
     //-- Table: periodos_trabalhados
-    static String TABLE_PERIODOS_TRABALHADOS = "CREATE TABLE periodos_trabalhados (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, data_hora_inicio DATETIME, data_hora_fim DATETIME);";
+    static String TABLE_PERIODOS_TRABALHADOS = "CREATE TABLE periodos_trabalhados (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, data_hora_inicio BIGINT, data_hora_fim BIGINT);";
 
     public synchronized static SQLiteDatabase instance(Context ctx) {
         if (mInstance == null) {
@@ -125,17 +125,14 @@ public class DB extends SQLiteOpenHelper {
     }
 
 
-    public static ContentValues byId(Context ctx, String tabela, String[] values, String field, Integer id){
+    public static ContentValues byId(Context ctx, String tabela, Integer id){
 
-        Cursor c = DB.instance(ctx).query(tabela,
-                values, field+"=? ",new String[]{id.toString()},null,null,null);
-
-        ContentValues map = new ContentValues();
+        ContentValues row = new ContentValues();
+        Cursor c = DB.instance(ctx).rawQuery("SELECT * FROM " + tabela + " WHERE id = ?", new String[]{String.valueOf(id)});
         if(c.moveToNext()){
-            DatabaseUtils.cursorRowToContentValues(c,map);
+            DatabaseUtils.cursorRowToContentValues(c, row);
         }
-        c.close();
+        return row;
 
-        return map;
     }
 }

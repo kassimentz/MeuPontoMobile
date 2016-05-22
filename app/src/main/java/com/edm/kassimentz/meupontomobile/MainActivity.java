@@ -18,6 +18,7 @@ import com.edm.kassimentz.meupontomobile.model.Telefone;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,15 +61,22 @@ public class MainActivity extends AppCompatActivity {
         funcionario.setTelefones(list);
         funcionario.setEnderecos(enderecos);
 
+        Calendar hoje = Calendar.getInstance();
+        Date now = hoje.getTime();
+
         CalendarioJustificativas cal = new CalendarioJustificativas();
-        cal.setData_hora(Calendar.getInstance());
+        cal.setData_hora(now);
+        cal.setJustificativa(Justificativa.ATESTADO_MEDICO);
+        cal.setObservacao("hdahdsa");
 
         List<CalendarioJustificativas> calendarios = new ArrayList<CalendarioJustificativas>();
         calendarios.add(cal);
 
+
         funcionario.setCalendarioJustificativas(calendarios);
         PeriodosTrabalhados per = new PeriodosTrabalhados();
-
+        per.setData_hora_fim(now);
+        per.setData_hora_inicio(now);
 
         List<PeriodosTrabalhados> listPer = new ArrayList<PeriodosTrabalhados>();
         listPer.add(per);
@@ -81,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
         Empresa empresa = new Empresa();
         empresa.setNome("teste");
+        empresa.setEndereco(endereco);
+        empresa.setTelefones(list);
 
         funcionario.setEmpresa(empresa);
         funcionarioDAO.salvar(funcionario);
