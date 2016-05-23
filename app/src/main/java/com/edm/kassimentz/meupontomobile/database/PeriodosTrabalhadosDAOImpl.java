@@ -10,7 +10,9 @@ import com.edm.kassimentz.meupontomobile.model.PeriodosTrabalhados;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class PeriodosTrabalhadosDAOImpl implements PeriodosTrabalhadosDAO {
@@ -31,11 +33,13 @@ public class PeriodosTrabalhadosDAOImpl implements PeriodosTrabalhadosDAO {
     @Override
     public void salvar(PeriodosTrabalhados periodosTrabalhados) {
 
+        Map<String, Object> map = verificaCamposNulos(periodosTrabalhados);
+
         DB.executeSQL(this.context,
                 "INSERT INTO "+table+" (data_hora_inicio, data_hora_fim) VALUES (?, ?)",
                 new String[]{
-                        String.valueOf(periodosTrabalhados.getData_hora_inicio().getTime()),
-                        String.valueOf(periodosTrabalhados.getData_hora_fim().getTime())
+                        String.valueOf(map.get("data_hora_inicio")),
+                        String.valueOf(map.get("data_hora_fim"))
                 });
     }
 
@@ -52,11 +56,13 @@ public class PeriodosTrabalhadosDAOImpl implements PeriodosTrabalhadosDAO {
     @Override
     public void atualizar(PeriodosTrabalhados periodosTrabalhados) {
 
+        Map<String, Object> map = verificaCamposNulos(periodosTrabalhados);
+
         DB.executeSQL(this.context,
                 "UPDATE "+table+" SET data_hora_inicio = ?, data_hora_fim = ? WHERE id = ?",
                 new String[]{
-                        String.valueOf(periodosTrabalhados.getData_hora_inicio().getTime()),
-                        String.valueOf(periodosTrabalhados.getData_hora_fim().getTime()),
+                        String.valueOf(map.get("data_hora_inicio")),
+                        String.valueOf(map.get("data_hora_fim")),
                         String.valueOf(periodosTrabalhados.getId())
                 });
     }
@@ -68,11 +74,14 @@ public class PeriodosTrabalhadosDAOImpl implements PeriodosTrabalhadosDAO {
 
         List<ContentValues> rows = DB.selectRows(this.context, "SELECT * FROM "+table, new String[]{ });
         for (ContentValues cv: rows) {
+
+            Map<String, Object> map = verificaListaCamposNulos(cv);
+
             PeriodosTrabalhados periodosTrabalhados = new PeriodosTrabalhados();
 
             periodosTrabalhados.setId(cv.getAsInteger("id"));
-            periodosTrabalhados.setData_hora_inicio(new Date(cv.getAsLong("data_hora_inicio")));
-            periodosTrabalhados.setData_hora_fim(new Date(cv.getAsLong("data_hora_fim")));
+            periodosTrabalhados.setData_hora_inicio((Date)map.get("data_hora_inicio"));
+            periodosTrabalhados.setData_hora_fim((Date)map.get("data_hora_fim"));
             periodosTrabalhadosList.add(periodosTrabalhados);
         }
 
@@ -84,12 +93,49 @@ public class PeriodosTrabalhadosDAOImpl implements PeriodosTrabalhadosDAO {
 
         ContentValues cv = DB.byId(this.context, table, id);
 
+        Map<String, Object> map = verificaListaCamposNulos(cv);
+
         PeriodosTrabalhados periodosTrabalhados = new PeriodosTrabalhados();
 
         periodosTrabalhados.setId(cv.getAsInteger("id"));
-        periodosTrabalhados.setData_hora_inicio(new Date(cv.getAsLong("data_hora_inicio")));
-        periodosTrabalhados.setData_hora_fim(new Date(cv.getAsLong("data_hora_fim")));
+        periodosTrabalhados.setData_hora_inicio((Date)map.get("data_hora_inicio"));
+        periodosTrabalhados.setData_hora_fim((Date)map.get("data_hora_fim"));
 
         return periodosTrabalhados;
+    }
+
+    private Map<String, Object> verificaListaCamposNulos(ContentValues cv) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Date data_hora_inicio = null, data_hora_fim = null;
+
+        if(cv.getAsLong("data_hora_inicio") != null){
+            data_hora_inicio = new Date(cv.getAsLong("data_hora_inicio"));
+        }
+        if(cv.getAsLong("data_hora_fim") != null){
+            data_hora_fim = new Date(cv.getAsLong("data_hora_fim"));
+        }
+
+        map.put("data_hora_inicio", data_hora_inicio);
+        map.put("data_hora_fim", data_hora_fim);
+        return map;
+    }
+
+    private Map<String, Object> verificaCamposNulos(PeriodosTrabalhados periodosTrabalhados){
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        Long data_hora_inicio = null, data_hora_fim = null;
+
+        if(periodosTrabalhados.getData_hora_inicio() != null){
+            data_hora_inicio = periodosTrabalhados.getData_hora_inicio().getTime();
+        }
+
+        if(periodosTrabalhados.getData_hora_fim() != null){
+            data_hora_fim = periodosTrabalhados.getData_hora_fim().getTime();
+        }
+
+        map.put("data_hora_inicio", data_hora_inicio);
+        map.put("data_hora_fim", data_hora_fim);
+
+        return map;
     }
 }

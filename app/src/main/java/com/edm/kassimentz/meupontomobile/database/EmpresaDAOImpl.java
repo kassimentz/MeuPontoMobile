@@ -9,7 +9,9 @@ import com.edm.kassimentz.meupontomobile.model.Endereco;
 import com.edm.kassimentz.meupontomobile.model.Telefone;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Kassiane Mentz on 14/05/16.
@@ -20,9 +22,9 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 
     private static final String table = "empresa";
 
-    private long lastEmpresaID;
-    private long lastTelefoneID;
-    private long lastEnderecoID;
+    private Long lastEmpresaID;
+    private Long lastTelefoneID;
+    private Long lastEnderecoID;
 
 
     EnderecoDAOImpl endDao;
@@ -37,6 +39,8 @@ public class EmpresaDAOImpl implements EmpresaDAO {
     @Override
     public void salvar(Empresa empresa) {
 
+        Map<String, Object> map = VerificaCamposNulos(empresa);
+
         endDao.salvar(empresa.getEndereco());
         this.setLastEnderecoID(DB.lastId(this.context, "endereco"));
 
@@ -44,8 +48,8 @@ public class EmpresaDAOImpl implements EmpresaDAO {
         DB.executeSQL(this.context,
                 "INSERT INTO " + table + " (id_endereco, nome) VALUES (?, ?)",
                 new String[]{
-                        String.valueOf(this.getLastEnderecoID()),
-                        empresa.getNome()
+                        String.valueOf(map.get("lastEnderecoID")),
+                        String.valueOf(map.get("nome"))
                 });
 
         this.setLastEmpresaID(DB.lastId(this.context, "empresa"));
@@ -65,8 +69,8 @@ public class EmpresaDAOImpl implements EmpresaDAO {
             }
         }
 
-
     }
+
 
     @Override
     public void excluir(Empresa empresa) {
@@ -94,6 +98,8 @@ public class EmpresaDAOImpl implements EmpresaDAO {
     @Override
     public void atualizar(Empresa empresa) {
 
+        Map<String, Object> map = VerificaCamposNulos(empresa);
+
         endDao.atualizar(empresa.getEndereco());
         List<Telefone> telefonesEmpresa = empresa.getTelefones();
 
@@ -105,7 +111,7 @@ public class EmpresaDAOImpl implements EmpresaDAO {
                 "UPDATE "+table+" SET id_endereco = ?, nome = ? WHERE id = ?",
                 new String[]{
                         String.valueOf(empresa.getEndereco().getId()),
-                        empresa.getNome(),
+                        String.valueOf(map.get("nome")),
                         String.valueOf(empresa.getId())
                 });
     }
@@ -133,16 +139,20 @@ public class EmpresaDAOImpl implements EmpresaDAO {
     @Override
     public Empresa procurarPorId(Integer id) {
 
+        Empresa empresa = new Empresa();
+
         ContentValues cv = DB.byId(this.context,table, id);
 
-        Empresa empresa = new Empresa();
+        Map<String, Object> map = verificaListaCamposNulos(cv);
+
         empresa.setId(cv.getAsInteger("id"));
-        Endereco endereco = endDao.procurarPorId(cv.getAsInteger("id_endereco"));
-        empresa.setEndereco(endereco);
+        empresa.setNome((String)map.get("nome"));
+        empresa.setEndereco((Endereco) map.get("endereco"));
         empresa.setTelefones(this.getTelefones(id));
 
         return empresa;
     }
+
 
     @Override
     public List<Telefone> getTelefones(Integer id) {
@@ -157,27 +167,62 @@ public class EmpresaDAOImpl implements EmpresaDAO {
         return telefonesList;
     }
 
-    private long getLastEmpresaID() {
+    private Long getLastEmpresaID() {
         return lastEmpresaID;
     }
 
-    private void setLastEmpresaID(long lastEmpresaID) {
+    private void setLastEmpresaID(Long lastEmpresaID) {
         this.lastEmpresaID = lastEmpresaID;
     }
 
-    private long getLastTelefoneID() {
+    private Long getLastTelefoneID() {
         return lastTelefoneID;
     }
 
-    private void setLastTelefoneID(long lastTelefoneID) {
+    private void setLastTelefoneID(Long lastTelefoneID) {
         this.lastTelefoneID = lastTelefoneID;
     }
 
-    public long getLastEnderecoID() {
+    public Long getLastEnderecoID() {
         return lastEnderecoID;
     }
 
-    public void setLastEnderecoID(long lastEnderecoID) {
+    public void setLastEnderecoID(Long lastEnderecoID) {
         this.lastEnderecoID = lastEnderecoID;
+    }
+
+
+    private Map<String, Object> VerificaCamposNulos(Empresa empresa) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        String nome = null;
+        Long lastEnderecoID = null;
+
+        if(this.getLastEnderecoID() != null){
+            lastEnderecoID = this.getLastEnderecoID();
+        }
+        if(empresa.getNome() != null){
+            nome = empresa.getNome();
+        }
+
+        map.put("lastEnderecoID", lastEnderecoID);
+        map.put("nome", nome);
+        return map;
+    }
+
+    private Map<String, Object> verificaListaCamposNulos(ContentValues cv) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        String nome = null;
+        Endereco endereco = null;
+
+        if(cv.getAsString("nome") != null){
+            nome = cv.getAsString("nome");
+        }
+        if(cv.getAsInteger("id_endereco") != null){
+            endereco = endDao.procurarPorId(cv.getAsInteger("id_endereco"));
+        }
+
+        map.put("nome", nome);
+        map.put("endereco", endereco);
+        return map;
     }
 }

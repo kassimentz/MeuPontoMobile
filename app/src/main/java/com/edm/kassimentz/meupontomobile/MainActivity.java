@@ -13,6 +13,7 @@ import com.edm.kassimentz.meupontomobile.model.Endereco;
 import com.edm.kassimentz.meupontomobile.model.Funcionario;
 import com.edm.kassimentz.meupontomobile.model.JornadaTrabalho;
 import com.edm.kassimentz.meupontomobile.model.Justificativa;
+import com.edm.kassimentz.meupontomobile.model.Periodo;
 import com.edm.kassimentz.meupontomobile.model.PeriodosTrabalhados;
 import com.edm.kassimentz.meupontomobile.model.Telefone;
 
@@ -51,12 +52,22 @@ public class MainActivity extends AppCompatActivity {
         endereco.setNumero(560);
         endereco.setLogradouro("Rua gabriel franco da luz");
 
+        Endereco endereco2 = new Endereco();
+        endereco2.setPais("BR");
+        endereco2.setEstado("RS");
+        endereco2.setCidade("Porto Alegre");
+        endereco2.setComplemento("Apto 101");
+        endereco2.setCep(90820030);
+        endereco2.setNumero(150);
+        endereco2.setLogradouro("Rua diomario moojen");
+
         List<Endereco> enderecos = new ArrayList<Endereco>();
         enderecos.add(endereco);
+        enderecos.add(endereco2);
 
         Funcionario funcionario = new Funcionario();
-        funcionario.setNome("Kassiane Mentz");
-        funcionario.setCargo("Desenvolvedora");
+        funcionario.setNome("Kassiane silva");
+        funcionario.setCargo("programadora");
         funcionario.setCpf("01119475023");
         funcionario.setTelefones(list);
         funcionario.setEnderecos(enderecos);
@@ -67,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         CalendarioJustificativas cal = new CalendarioJustificativas();
         cal.setData_hora(now);
         cal.setJustificativa(Justificativa.ATESTADO_MEDICO);
-        cal.setObservacao("hdahdsa");
+        cal.setObservacao("fsafafare");
 
         List<CalendarioJustificativas> calendarios = new ArrayList<CalendarioJustificativas>();
         calendarios.add(cal);
@@ -84,12 +95,13 @@ public class MainActivity extends AppCompatActivity {
         funcionario.setPeriodosTrabalhados(listPer);
 
         JornadaTrabalho jor = new JornadaTrabalho();
-        jor.setTrabalho_domingo(false);
+        jor.setTrabalho_domingo(true);
+        jor.setPeriodo(Periodo.DIURNO);
         funcionario.setJornadaTrabalho(jor);
 
         Empresa empresa = new Empresa();
-        empresa.setNome("teste");
-        empresa.setEndereco(endereco);
+        empresa.setNome("nova empresa");
+        empresa.setEndereco(endereco2);
         empresa.setTelefones(list);
 
         funcionario.setEmpresa(empresa);

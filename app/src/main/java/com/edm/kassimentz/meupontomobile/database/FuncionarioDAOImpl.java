@@ -6,14 +6,18 @@ import android.util.Log;
 
 import com.edm.kassimentz.meupontomobile.database.banco.DB;
 import com.edm.kassimentz.meupontomobile.model.CalendarioJustificativas;
+import com.edm.kassimentz.meupontomobile.model.Empresa;
 import com.edm.kassimentz.meupontomobile.model.Endereco;
 import com.edm.kassimentz.meupontomobile.model.Funcionario;
+import com.edm.kassimentz.meupontomobile.model.JornadaTrabalho;
 import com.edm.kassimentz.meupontomobile.model.PeriodosTrabalhados;
 import com.edm.kassimentz.meupontomobile.model.Telefone;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Kassiane Mentz on 14/05/16.
@@ -30,13 +34,13 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
     EmpresaDAOImpl empresaDao;
     JornadaTrabalhoDAOImpl jornadaTrabalhoDao;
 
-    private long lastFuncionarioID;
-    private long lastEnderecoID;
-    private long lastTelefoneID;
-    private long lastPeriodosTrabalhadosID;
-    private long lastCalendarioJustificativasID;
-    private long lastEmpresaID;
-    private long lastJornadaTrabalhoID;
+    private Long lastFuncionarioID;
+    private Long lastEnderecoID;
+    private Long lastTelefoneID;
+    private Long lastPeriodosTrabalhadosID;
+    private Long lastCalendarioJustificativasID;
+    private Long lastEmpresaID;
+    private Long lastJornadaTrabalhoID;
 
     public FuncionarioDAOImpl(Context ctx){
         this.context = ctx;
@@ -61,14 +65,16 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
             this.setLastJornadaTrabalhoID(DB.lastId(this.context, "jornada_trabalho"));
         }
 
+        Map<String, Object> map = verificaCamposNulos(funcionario);
+
         DB.executeSQL(this.context,
                 "INSERT INTO "+table+" (nome, cpf, cargo, id_empresa, id_jornada_trabalho) VALUES (?, ?, ?, ?, ?)",
                 new String[]{
-                        funcionario.getNome(),
-                        funcionario.getCpf(),
-                        funcionario.getCargo(),
-                        String.valueOf(this.getLastEmpresaID()),
-                        String.valueOf(this.getLastJornadaTrabalhoID())
+                        String.valueOf(map.get("nome")),
+                        String.valueOf(map.get("cpf")),
+                        String.valueOf(map.get("cargo")),
+                        String.valueOf(map.get("empresaID")),
+                        String.valueOf(map.get("jornadaTrabalhoID"))
                 });
         this.setLastFuncionarioID(DB.lastId(this.context, table));
 
@@ -205,12 +211,14 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
         empresaDao.atualizar(funcionario.getEmpresa());
         jornadaTrabalhoDao.atualizar(funcionario.getJornadaTrabalho());
 
+        Map<String, Object> map = verificaCamposNulos(funcionario);
+
         DB.executeSQL(this.context,
                 "UPDATE "+table+" SET nome = ?, cpf = ?, cargo = ? , id_empresa = ?, id_jornada_trabalho = ? WHERE id = ?",
                 new String[]{
-                        funcionario.getNome(),
-                        funcionario.getCpf(),
-                        funcionario.getCargo(),
+                        String.valueOf(map.get("nome")),
+                        String.valueOf(map.get("cpf")),
+                        String.valueOf(map.get("cargo")),
                         String.valueOf(funcionario.getEmpresa().getId()),
                         String.valueOf(funcionario.getJornadaTrabalho().getId()),
                         String.valueOf(funcionario.getId())
@@ -284,13 +292,15 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
         List<ContentValues> rows = DB.selectRows(this.context, "SELECT * FROM "+table, new String[]{ });
         for (ContentValues cv: rows) {
 
+            Map<String, Object> map = VerificaListaValoresNulos(cv);
+
             Funcionario funcionario = new Funcionario();
             funcionario.setId(cv.getAsInteger("id"));
-            funcionario.setNome(cv.getAsString("nome"));
-            funcionario.setCpf(cv.getAsString("cpf"));
-            funcionario.setCargo(cv.getAsString("cargo"));
-            funcionario.setEmpresa(empresaDao.procurarPorId(cv.getAsInteger("id_empresa")));
-            funcionario.setJornadaTrabalho(jornadaTrabalhoDao.procurarPorId(cv.getAsInteger("id_jornada_trabalho")));
+            funcionario.setNome((String)map.get("nome"));
+            funcionario.setCpf((String)map.get("cpf"));
+            funcionario.setCargo((String)map.get("cargo"));
+            funcionario.setEmpresa((Empresa)map.get("empresa"));
+            funcionario.setJornadaTrabalho((JornadaTrabalho)map.get("jornadaTrabalho"));
             funcionario.setEnderecos(this.getEnderecos(cv.getAsInteger("id")));
             funcionario.setTelefones(this.getTelefones(cv.getAsInteger("id")));
             funcionario.setPeriodosTrabalhados(this.getPeriodosTrabalhados(cv.getAsInteger("id")));
@@ -308,13 +318,15 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
 
         ContentValues cv = DB.byId(this.context, table, id);
 
+        Map<String, Object> map = VerificaListaValoresNulos(cv);
+
         Funcionario funcionario = new Funcionario();
         funcionario.setId(cv.getAsInteger("id"));
-        funcionario.setNome(cv.getAsString("nome"));
-        funcionario.setCpf(cv.getAsString("cpf"));
-        funcionario.setCargo(cv.getAsString("cargo"));
-        funcionario.setEmpresa(empresaDao.procurarPorId(cv.getAsInteger("id_empresa")));
-        funcionario.setJornadaTrabalho(jornadaTrabalhoDao.procurarPorId(cv.getAsInteger("id_jornada_trabalho")));
+        funcionario.setNome((String)map.get("nome"));
+        funcionario.setCpf((String)map.get("cpf"));
+        funcionario.setCargo((String)map.get("cargo"));
+        funcionario.setEmpresa((Empresa)map.get("empresa"));
+        funcionario.setJornadaTrabalho((JornadaTrabalho)map.get("jornadaTrabalho"));
         funcionario.setEnderecos(this.getEnderecos(cv.getAsInteger("id")));
         funcionario.setTelefones(this.getTelefones(cv.getAsInteger("id")));
         funcionario.setPeriodosTrabalhados(this.getPeriodosTrabalhados(cv.getAsInteger("id")));
@@ -322,6 +334,8 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
 
         return funcionario;
     }
+
+
 
     @Override
     public void baterPonto(Calendar hora) {
@@ -338,59 +352,120 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
 
     }
 
-    public long getLastFuncionarioID() {
+    public Long getLastFuncionarioID() {
         return lastFuncionarioID;
     }
 
-    public void setLastFuncionarioID(long lastFuncionarioID) {
+    public void setLastFuncionarioID(Long lastFuncionarioID) {
         this.lastFuncionarioID = lastFuncionarioID;
     }
 
-    public long getLastEnderecoID() {
+    public Long getLastEnderecoID() {
         return lastEnderecoID;
     }
 
-    public void setLastEnderecoID(long lastEnderecoID) {
+    public void setLastEnderecoID(Long lastEnderecoID) {
         this.lastEnderecoID = lastEnderecoID;
     }
 
-    public long getLastTelefoneID() {
+    public Long getLastTelefoneID() {
         return lastTelefoneID;
     }
 
-    public void setLastTelefoneID(long lastTelefoneID) {
+    public void setLastTelefoneID(Long lastTelefoneID) {
         this.lastTelefoneID = lastTelefoneID;
     }
 
-    public long getLastPeriodosTrabalhadosID() {
+    public Long getLastPeriodosTrabalhadosID() {
         return lastPeriodosTrabalhadosID;
     }
 
-    public void setLastPeriodosTrabalhadosID(long lastPeriodosTrabalhadosID) {
+    public void setLastPeriodosTrabalhadosID(Long lastPeriodosTrabalhadosID) {
         this.lastPeriodosTrabalhadosID = lastPeriodosTrabalhadosID;
     }
 
-    public long getLastCalendarioJustificativasID() {
+    public Long getLastCalendarioJustificativasID() {
         return lastCalendarioJustificativasID;
     }
 
-    public void setLastCalendarioJustificativasID(long lastCalendarioJustificativasID) {
+    public void setLastCalendarioJustificativasID(Long lastCalendarioJustificativasID) {
         this.lastCalendarioJustificativasID = lastCalendarioJustificativasID;
     }
 
-    public long getLastEmpresaID() {
+    public Long getLastEmpresaID() {
         return lastEmpresaID;
     }
 
-    public void setLastEmpresaID(long lastEmpresaID) {
+    public void setLastEmpresaID(Long lastEmpresaID) {
         this.lastEmpresaID = lastEmpresaID;
     }
 
-    public long getLastJornadaTrabalhoID() {
+    public Long getLastJornadaTrabalhoID() {
         return lastJornadaTrabalhoID;
     }
 
-    public void setLastJornadaTrabalhoID(long lastJornadaTrabalhoID) {
+    public void setLastJornadaTrabalhoID(Long lastJornadaTrabalhoID) {
         this.lastJornadaTrabalhoID = lastJornadaTrabalhoID;
+    }
+
+
+    private Map<String, Object> verificaCamposNulos(Funcionario funcionario) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        String nome = null, cpf = null, cargo = null;
+        Long empresaID = null, jornadaTrabalhoID = null;
+
+        if(funcionario.getNome() != null){
+            nome = funcionario.getNome();
+        }
+        if(funcionario.getCpf() != null){
+            cpf = funcionario.getCpf();
+        }
+        if(funcionario.getCargo() != null){
+            cargo = funcionario.getCargo();
+        }
+        if(this.getLastEmpresaID() != null){
+            empresaID = this.getLastEmpresaID();
+        }
+        if(this.getLastJornadaTrabalhoID() != null){
+            jornadaTrabalhoID = this.getLastJornadaTrabalhoID();
+        }
+
+        map.put("nome", nome);
+        map.put("cpf", cpf);
+        map.put("cargo", cargo);
+        map.put("empresaID", empresaID);
+        map.put("jornadaTrabalhoID", jornadaTrabalhoID);
+
+        return map;
+    }
+
+    private Map<String, Object> VerificaListaValoresNulos(ContentValues cv) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        String nome = null, cpf = null, cargo = null;
+        Empresa empresa = null;
+        JornadaTrabalho jornadaTrabalho = null;
+
+        if(cv.getAsString("nome") != nome){
+            nome = cv.getAsString("nome");
+        }
+        if(cv.getAsString("cpf") != null){
+            cpf = cv.getAsString("cpf");
+        }
+        if(cv.getAsString("cargo") != null){
+            cargo = cv.getAsString("cargo");
+        }
+        if(cv.getAsInteger("id_empresa") != null){
+            empresa = empresaDao.procurarPorId(cv.getAsInteger("id_empresa"));
+        }
+        if(cv.getAsInteger("id_jornada_trabalho") != null){
+            jornadaTrabalho = jornadaTrabalhoDao.procurarPorId(cv.getAsInteger("id_jornada_trabalho"));
+        }
+
+        map.put("nome", nome);
+        map.put("cpf", cpf);
+        map.put("cargo", cargo);
+        map.put("empresa", empresa);
+        map.put("jornadaTrabalho", jornadaTrabalho);
+        return map;
     }
 }
