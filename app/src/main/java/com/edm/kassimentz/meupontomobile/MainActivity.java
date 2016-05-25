@@ -1,5 +1,6 @@
 package com.edm.kassimentz.meupontomobile;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+    }
+
+    public void cadastrar (View v){
+        Intent cadastro =  new Intent(MainActivity.this, CadastroActivity.class);
+        startActivity(cadastro);
     }
 
     public void salvar (View v){

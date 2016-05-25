@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MeuPontoMobile</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dadosPessoas">Dados Pessoais Fragment</string>
+    <string name="endereco">Endereço Fragment</string>
+    <string name="telefone">Telefone Fragment</string>
 </resources>
