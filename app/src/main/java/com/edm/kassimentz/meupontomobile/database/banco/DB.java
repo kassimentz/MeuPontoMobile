@@ -40,7 +40,7 @@ public class DB extends SQLiteOpenHelper {
     static String TABLE_EMPRESA = "CREATE TABLE empresa (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_endereco INTEGER (10), nome VARCHAR (100));";
 
     //-- Table: funcionario
-    static String TABLE_FUNCIONARIO = "CREATE TABLE funcionario (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome VARCHAR (200), cpf VARCHAR (12), cargo VARCHAR (100), id_empresa INTEGER, id_jornada_trabalho INTEGER);";
+    static String TABLE_FUNCIONARIO = "CREATE TABLE funcionario (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, usuario VARCHAR(100), senha VARCHAR(100), nome VARCHAR (200), cpf VARCHAR (12), cargo VARCHAR (100), id_empresa INTEGER, id_jornada_trabalho INTEGER);";
 
     //-- Table: telefone
     static String TABLE_TELEFONE = "CREATE TABLE telefone (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, ddd CHAR (2), telefone CHAR (10));";
@@ -49,7 +49,7 @@ public class DB extends SQLiteOpenHelper {
     static String TABLE_FUNCIONARIO_ENDERECO = "CREATE TABLE funcionario_endereco (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_funcionario INTEGER, id_endereco INTEGER);";
 
     //-- Table: endereco
-    static String TABLE_ENDERECO = "CREATE TABLE endereco (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, cep INTEGER(10), logradouro VARCHAR (100), numero INTEGER (10), complemento VARCHAR (50), cidade VARCHAR (100), estado CHAR (2), pais CHAR (2));";
+    static String TABLE_ENDERECO = "CREATE TABLE endereco (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, cep INTEGER(10), logradouro VARCHAR (100), numero INTEGER (10), complemento VARCHAR (50), cidade VARCHAR (100), estado CHAR (2), pais CHAR (3));";
 
     //-- Table: periodos_trabalhados
     static String TABLE_PERIODOS_TRABALHADOS = "CREATE TABLE periodos_trabalhados (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, data_hora_inicio BIGINT, data_hora_fim BIGINT);";

@@ -6,4 +6,101 @@
     <string name="dadosPessoas">Dados Pessoais Fragment</string>
     <string name="endereco">Endereço Fragment</string>
     <string name="telefone">Telefone Fragment</string>
+
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+
+    <string-array name="estados">
+        <item>AC</item>
+        <item>AL</item>
+        <item>AP</item>
+        <item>AM</item>
+        <item>BA</item>
+        <item>CE</item>
+        <item>DF</item>
+        <item>ES</item>
+        <item>GO</item>
+        <item>MA</item>
+        <item>MT</item>
+        <item>MS</item>
+        <item>MG</item>
+        <item>PA</item>
+        <item>PB</item>
+        <item>PR</item>
+        <item>PE</item>
+        <item>PI</item>
+        <item>RJ</item>
+        <item>RN</item>
+        <item>RS</item>
+        <item>RO</item>
+        <item>RR</item>
+        <item>SC</item>
+        <item>SP</item>
+        <item>SE</item>
+        <item>TO</item>
+    </string-array>
+
+    <string-array name="paisesLatinos">
+        <item>BOL</item>
+        <item>BRA</item>
+        <item>CHL</item>
+        <item>COL</item>
+        <item>ECU</item>
+        <item>GUY</item>
+        <item>PRY</item>
+        <item>PER</item>
+        <item>PER</item>
+        <item>SUR</item>
+        <item>URY</item>
+        <item>VEN</item>
+    </string-array>
+
+    <string-array name="principaisCidades">
+        <item>Barquisimeto</item>
+        <item>Barranquilla</item>
+        <item>Belém</item>
+        <item>Belo Horizonte</item>
+        <item>Bogotá</item>
+        <item>Brasília</item>
+        <item>Buenos Aires</item>
+        <item>Cáli</item>
+        <item>Campinas</item>
+        <item>Caracas</item>
+        <item>Cochabamba</item>
+        <item>Córdoba</item>
+        <item>Curitiba</item>
+        <item>Fortaleza</item>
+        <item>Goiânia</item>
+        <item>Guayaquil</item>
+        <item>Lima</item>
+        <item>Manaus</item>
+        <item>Maracaibo</item>
+        <item>Medellín</item>
+        <item>Montevideo</item>
+        <item>Porto Alegre</item>
+        <item>Canoas</item>
+        <item>Novo Hamburgo</item>
+        <item>Guaiba</item>
+        <item>Eldorado do Sul</item>
+        <item>Viamão</item>
+        <item>Alvorada</item>
+        <item>Gravataí</item>
+        <item>Cachoeirinha</item>
+        <item>Quito</item>
+        <item>Recife</item>
+        <item>Rio de Janeiro</item>
+        <item>Salvador</item>
+        <item>Santa Cruz de la Sierra </item>
+        <item>Santiago</item>
+        <item>São Paulo</item>
+        <item>Valencia</item>
+    </string-array>
 </resources>
