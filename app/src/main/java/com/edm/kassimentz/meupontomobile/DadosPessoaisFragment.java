@@ -47,8 +47,13 @@ public class DadosPessoaisFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_dados_pessoais, container, false);
     }
 
-
-
+	@Override
+      public void onSaveInstanceState(Bundle outState) {
+          super.onSaveInstanceState(outState);
+          setarFuncionario();
+		  ((CadastroActivity)getActivity()).setFuncionario(funcionario);	
+      }
+   
 
     private void setarFuncionario() {
 

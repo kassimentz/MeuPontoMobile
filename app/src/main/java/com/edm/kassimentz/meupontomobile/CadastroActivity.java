@@ -40,7 +40,7 @@ public class CadastroActivity extends AppCompatActivity {
     private Endereco endereco;
     private Telefone telefone;
 
-
+	
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,15 +112,15 @@ public class CadastroActivity extends AppCompatActivity {
         Toast toast;
 
         funcionarioDAO = new FuncionarioDAOImpl(this.getBaseContext());
-
+		Funcionario f = this.getFuncionario();
         List<Endereco> enderecos = new ArrayList<Endereco>();
-        enderecos.add(endereco);
+        enderecos.add(this.getEndereco());
 
         List<Telefone> telefones = new ArrayList<Telefone>();
-        telefones.add(telefone);
-        funcionario.setEnderecos(enderecos);
-        funcionario.setTelefones(telefones);
-        funcionarioDAO.salvar(funcionario);
+        telefones.add(this.getTelefone());
+        f.setEnderecos(enderecos);
+        f.setTelefones(telefones);
+        funcionarioDAO.salvar(f);
         Log.i("info", "funcionario cadastrado com sucesso");
 
         Context contexto = getApplicationContext();
@@ -130,4 +130,28 @@ public class CadastroActivity extends AppCompatActivity {
         toast.show();
 
     }
+    
+    public setFuncionario(Funcionario funcionario){
+		this.funcionario = funcionario;
+	}
+	
+	public getFuncionario(){
+		return this.funcionario;
+	}
+	
+	public setEndereco(Endereco endereco){
+		this.endereco = endereco;
+	}
+	
+	public getEndereco(){
+		return this.endereco;
+	}
+	
+	public setTelefone(Telefone telefone){
+		this.telefone = telefone;
+	}
+	
+	public getTelefone(){
+		return this.telefone;
+	}
 }

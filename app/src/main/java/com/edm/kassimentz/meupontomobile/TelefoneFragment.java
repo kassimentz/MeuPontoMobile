@@ -52,7 +52,12 @@ public class TelefoneFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_telefone, container, false);
     }
 
-
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+	  super.onSaveInstanceState(outState);
+	  setarTelefone();
+	  ((CadastroActivity)getActivity()).setTelefone(telefone);	
+	}
 
     private void setarTelefone() {
 

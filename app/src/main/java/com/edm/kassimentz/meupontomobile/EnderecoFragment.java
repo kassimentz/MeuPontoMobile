@@ -75,6 +75,13 @@ public class EnderecoFragment extends Fragment {
 
 
     }
+    
+    @Override
+	  public void onSaveInstanceState(Bundle outState) {
+	      super.onSaveInstanceState(outState);
+	      setarEndereco();
+		  ((CadastroActivity)getActivity()).setEndereco(endereco);	
+	  }
 
     private void setarEndereco() {
         String logradouro = null, complemento= null, cidade = null, estado = null, pais = null;
