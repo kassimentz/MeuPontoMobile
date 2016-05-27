@@ -7,7 +7,7 @@ tools:context="com.edm.kassimentz.meupontomobile.EnderecoFragment">
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtLogradouro"
+        android:id="@+id/txtLogradouroEndereco"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
@@ -18,18 +18,18 @@ tools:context="com.edm.kassimentz.meupontomobile.EnderecoFragment">
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/txtNumero"
+        android:id="@+id/txtNumeroEndereco"
         android:layout_marginTop="35dp"
-        android:layout_below="@+id/txtLogradouro"
+        android:layout_below="@+id/txtLogradouroEndereco"
         android:layout_alignParentStart="true"
         android:hint="Número:" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txtComplemento"
-        android:layout_alignBottom="@+id/txtNumero"
-        android:layout_toEndOf="@+id/txtNumero"
+        android:id="@+id/txtComplementoEndereco"
+        android:layout_alignBottom="@+id/txtNumeroEndereco"
+        android:layout_toEndOf="@+id/txtNumeroEndereco"
         android:hint="Complemento:" />
 
     <EditText
@@ -37,8 +37,8 @@ tools:context="com.edm.kassimentz.meupontomobile.EnderecoFragment">
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/txtCep"
-        android:layout_below="@+id/txtNumero"
+        android:id="@+id/txtCepEndereco"
+        android:layout_below="@+id/txtNumeroEndereco"
         android:layout_alignParentStart="true"
         android:layout_marginTop="39dp"
         android:hint="CEP:" />
@@ -46,7 +46,7 @@ tools:context="com.edm.kassimentz.meupontomobile.EnderecoFragment">
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinCidade"
+        android:id="@+id/spinCidadeEndereco"
         android:spinnerMode="dialog"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
@@ -55,8 +55,8 @@ tools:context="com.edm.kassimentz.meupontomobile.EnderecoFragment">
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinEstado"
-        android:layout_below="@+id/spinCidade"
+        android:id="@+id/spinEstadoEndereco"
+        android:layout_below="@+id/spinCidadeEndereco"
         android:layout_alignParentStart="true"
         android:layout_marginTop="39dp"
         android:spinnerMode="dialog" />
@@ -64,8 +64,8 @@ tools:context="com.edm.kassimentz.meupontomobile.EnderecoFragment">
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinPais"
-        android:layout_below="@+id/spinEstado"
+        android:id="@+id/spinPaisEndereco"
+        android:layout_below="@+id/spinEstadoEndereco"
         android:layout_marginTop="44dp"
         android:layout_alignParentEnd="true"
         android:spinnerMode="dialog" />

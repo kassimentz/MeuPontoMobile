@@ -22,4 +22,5 @@ public interface FuncionarioDAO extends GenericDAO<Funcionario>{
     public void baterPonto(Calendar hora);
     public void emitirRelatorio();
     public void fecharPeriodo(int periodo);
+    public boolean login(String login, String senha);
 }

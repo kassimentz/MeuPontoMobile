@@ -335,6 +335,32 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
         return funcionario;
     }
 
+    @Override
+    public boolean login(String login, String senha) {
+
+        ContentValues cv = DB.selectRow(this.context, "SELECT * FROM funcionario WHERE login = ? AND senha = ?", new String[]{login, senha});
+
+        if(cv.getAsInteger("id") != null){
+            Map<String, Object> map = VerificaListaValoresNulos(cv);
+
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(cv.getAsInteger("id"));
+            funcionario.setNome((String)map.get("nome"));
+            funcionario.setCpf((String)map.get("cpf"));
+            funcionario.setCargo((String)map.get("cargo"));
+            funcionario.setEmpresa((Empresa)map.get("empresa"));
+            funcionario.setJornadaTrabalho((JornadaTrabalho)map.get("jornadaTrabalho"));
+            funcionario.setEnderecos(this.getEnderecos(cv.getAsInteger("id")));
+            funcionario.setTelefones(this.getTelefones(cv.getAsInteger("id")));
+            funcionario.setPeriodosTrabalhados(this.getPeriodosTrabalhados(cv.getAsInteger("id")));
+            funcionario.setCalendarioJustificativas(this.getCalendarioJustificativas(cv.getAsInteger("id")));
+
+            return true;
+        }else{
+            return false;
+        }
+
+    }
 
 
     @Override
@@ -351,6 +377,8 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
     public void fecharPeriodo(int periodo) {
 
     }
+
+
 
     public Long getLastFuncionarioID() {
         return lastFuncionarioID;

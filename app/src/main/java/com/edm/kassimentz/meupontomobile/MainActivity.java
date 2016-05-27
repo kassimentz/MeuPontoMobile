@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void salvar (View v){
 
-        funcionarioDAO = new FuncionarioDAOImpl(this.getBaseContext());
+        /*funcionarioDAO = new FuncionarioDAOImpl(this.getBaseContext());
 
         Telefone telefone = new Telefone();
         telefone.setDdd("51");
@@ -122,6 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("table", e.getLogradouro());
             }
 
-        }
+        }*/
     }
 }

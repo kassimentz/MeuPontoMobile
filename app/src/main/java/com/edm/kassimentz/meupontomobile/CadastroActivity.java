@@ -1,21 +1,32 @@
 package com.edm.kassimentz.meupontomobile;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.edm.kassimentz.meupontomobile.database.FuncionarioDAOImpl;
+import com.edm.kassimentz.meupontomobile.model.Endereco;
+import com.edm.kassimentz.meupontomobile.model.Funcionario;
+import com.edm.kassimentz.meupontomobile.model.Telefone;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CadastroActivity extends AppCompatActivity {
 
+    FuncionarioDAOImpl funcionarioDAO;
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -24,6 +35,12 @@ public class CadastroActivity extends AppCompatActivity {
             R.drawable.ic_tab_endereco,
             R.drawable.ic_tab_telefone
     };
+
+    private Funcionario funcionario;
+    private Endereco endereco;
+    private Telefone telefone;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +61,7 @@ public class CadastroActivity extends AppCompatActivity {
         setupTabIcons();
 
     }
+
 
     private void setupTabIcons(){
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
@@ -87,5 +105,29 @@ public class CadastroActivity extends AppCompatActivity {
 
             return mFragmentTitleList.get(position);
         }
+    }
+
+    public void persistirFuncionario(){
+
+        Toast toast;
+
+        funcionarioDAO = new FuncionarioDAOImpl(this.getBaseContext());
+
+        List<Endereco> enderecos = new ArrayList<Endereco>();
+        enderecos.add(endereco);
+
+        List<Telefone> telefones = new ArrayList<Telefone>();
+        telefones.add(telefone);
+        funcionario.setEnderecos(enderecos);
+        funcionario.setTelefones(telefones);
+        funcionarioDAO.salvar(funcionario);
+        Log.i("info", "funcionario cadastrado com sucesso");
+
+        Context contexto = getApplicationContext();
+        int duracao = Toast.LENGTH_SHORT;
+        String texto = "Cadastro realizado com sucesso!";
+        toast= Toast.makeText(contexto, texto,duracao);
+        toast.show();
+
     }
 }

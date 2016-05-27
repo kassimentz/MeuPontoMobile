@@ -5,10 +5,14 @@ import java.util.List;
 
 public class Funcionario implements Serializable {
 
+	private static final long serialVersionUID = -2163051469151804394L;
+
 	private Integer id;
 	private String nome;
 	private String cpf;
 	private String cargo;
+	private String usuario;
+	private String senha;
 	private Empresa empresa;
 	private JornadaTrabalho jornadaTrabalho;
 	private List<Endereco> enderecos;
@@ -62,6 +66,22 @@ public class Funcionario implements Serializable {
 
 	public void setCargo(String cargo) {
 		this.cargo = cargo;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	public Empresa getEmpresa() {

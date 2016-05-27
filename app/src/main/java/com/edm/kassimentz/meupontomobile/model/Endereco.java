@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Endereco  implements Serializable {
 
+	private static final long serialVersionUID = -2163081969151804394L;
 	private Integer id;
 	private String logradouro;
 	private Integer numero;

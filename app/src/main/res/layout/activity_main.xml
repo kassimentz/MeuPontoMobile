@@ -27,6 +27,14 @@
             android:textSize="30dp"
             android:paddingTop="5dp"/>
 
+        <ImageView
+            android:layout_width="174dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_fingerprint_black_48dp"
+            android:layout_weight="0.52" />
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="60dp"

@@ -124,6 +124,16 @@ public class DB extends SQLiteOpenHelper {
         return rows.get(0).getAsLong("seq");
     }
 
+    public static ContentValues selectRow(Context ctx, String sql, String[] params) {
+        Cursor c = DB.instance(ctx).rawQuery(sql, params);
+
+        ContentValues map = new ContentValues();
+        if(c.moveToNext()) {
+            DatabaseUtils.cursorRowToContentValues(c, map);
+        }
+        c.close();
+        return map;
+    }
 
     public static ContentValues byId(Context ctx, String tabela, Integer id){
 
@@ -132,7 +142,9 @@ public class DB extends SQLiteOpenHelper {
         if(c.moveToNext()){
             DatabaseUtils.cursorRowToContentValues(c, row);
         }
+        c.close();
         return row;
 
     }
+
 }
