@@ -68,8 +68,10 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
         Map<String, Object> map = verificaCamposNulos(funcionario);
 
         DB.executeSQL(this.context,
-                "INSERT INTO "+table+" (nome, cpf, cargo, id_empresa, id_jornada_trabalho) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO "+table+" (usuario, senha, nome, cpf, cargo, id_empresa, id_jornada_trabalho) VALUES (?, ?, ?, ?, ?, ?, ?)",
                 new String[]{
+                        String.valueOf(map.get("usuario")),
+                        String.valueOf(map.get("senha")),
                         String.valueOf(map.get("nome")),
                         String.valueOf(map.get("cpf")),
                         String.valueOf(map.get("cargo")),
@@ -338,7 +340,8 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
     @Override
     public boolean login(String login, String senha) {
 
-        ContentValues cv = DB.selectRow(this.context, "SELECT * FROM funcionario WHERE login = ? AND senha = ?", new String[]{login, senha});
+        ContentValues cv = DB.selectRow(this.context, "SELECT * FROM funcionario WHERE usuario" +
+                " = ? AND senha = ?", new String[]{login, senha});
 
         if(cv.getAsInteger("id") != null){
             Map<String, Object> map = VerificaListaValoresNulos(cv);
@@ -439,9 +442,15 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
 
     private Map<String, Object> verificaCamposNulos(Funcionario funcionario) {
         Map<String, Object> map = new HashMap<String, Object>();
-        String nome = null, cpf = null, cargo = null;
+        String usuario = null, senha = null, nome = null, cpf = null, cargo = null;
         Long empresaID = null, jornadaTrabalhoID = null;
 
+        if(funcionario.getUsuario() != null){
+            usuario = funcionario.getUsuario();
+        }
+        if(funcionario.getSenha() != null){
+            senha = funcionario.getSenha();
+        }
         if(funcionario.getNome() != null){
             nome = funcionario.getNome();
         }
@@ -458,6 +467,8 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
             jornadaTrabalhoID = this.getLastJornadaTrabalhoID();
         }
 
+        map.put("usuario", usuario);
+        map.put("senha", senha);
         map.put("nome", nome);
         map.put("cpf", cpf);
         map.put("cargo", cargo);
@@ -469,11 +480,17 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
 
     private Map<String, Object> VerificaListaValoresNulos(ContentValues cv) {
         Map<String, Object> map = new HashMap<String, Object>();
-        String nome = null, cpf = null, cargo = null;
+        String usuario = null, senha = null, nome = null, cpf = null, cargo = null;
         Empresa empresa = null;
         JornadaTrabalho jornadaTrabalho = null;
 
-        if(cv.getAsString("nome") != nome){
+        if(cv.getAsString("usuario") != null){
+            usuario = cv.getAsString("usuario");
+        }
+        if(cv.getAsString("senha") != null){
+            senha = cv.getAsString("senha");
+        }
+        if(cv.getAsString("nome") != null){
             nome = cv.getAsString("nome");
         }
         if(cv.getAsString("cpf") != null){
@@ -489,6 +506,8 @@ public class FuncionarioDAOImpl implements FuncionarioDAO{
             jornadaTrabalho = jornadaTrabalhoDao.procurarPorId(cv.getAsInteger("id_jornada_trabalho"));
         }
 
+        map.put("usuario", usuario);
+        map.put("senha", senha);
         map.put("nome", nome);
         map.put("cpf", cpf);
         map.put("cargo", cargo);

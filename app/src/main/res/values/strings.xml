@@ -7,19 +7,9 @@
     <string name="endereco">Endereço Fragment</string>
     <string name="telefone">Telefone Fragment</string>
 
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
+
 
     <string-array name="estados">
-        <item>Estado</item>
         <item>AC</item>
         <item>AL</item>
         <item>AP</item>
@@ -50,7 +40,6 @@
     </string-array>
 
     <string-array name="paisesLatinos">
-        <item>País</item>
         <item>BOL</item>
         <item>BRA</item>
         <item>CHL</item>
@@ -66,7 +55,6 @@
     </string-array>
 
     <string-array name="principaisCidades">
-        <item>Cidade</item>
         <item>Barquisimeto</item>
         <item>Barranquilla</item>
         <item>Belém</item>

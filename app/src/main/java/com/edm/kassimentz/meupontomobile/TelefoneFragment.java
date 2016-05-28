@@ -56,7 +56,7 @@ public class TelefoneFragment extends Fragment {
         return v;
     }
 
-    /*@Override
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
@@ -68,7 +68,7 @@ public class TelefoneFragment extends Fragment {
                 ((CadastroActivity)getActivity()).setTelefone(telefone);
             }
         }
-    }*/
+    }
 
     private void setarTelefone() {
 

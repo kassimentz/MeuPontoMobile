@@ -42,8 +42,9 @@ public class DadosPessoaisFragment extends Fragment {
         txtSenha = (EditText) v.findViewById(R.id.txtSenha);
 
 
-        return inflater.inflate(R.layout.fragment_dados_pessoais, container, false);
+        return v;
     }
+
 
 
     @Override
@@ -74,7 +75,7 @@ public class DadosPessoaisFragment extends Fragment {
             senha = txtSenha.getText().toString();
         }
         if(!txtUsuario.getText().toString().isEmpty()){
-            txtUsuario.getText().toString();
+            usuario = txtUsuario.getText().toString();
         }
 
         funcionario.setNome(nome);
