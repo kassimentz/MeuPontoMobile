@@ -47,7 +47,7 @@ public class EnderecoFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_endereco, container, false);
 
         txtLogradouro = (EditText) v.findViewById(R.id.txtLogradouroEndereco);
-        txtNumero = (EditText) v.findViewById(R.id.txtCepEndereco);
+        txtNumero = (EditText) v.findViewById(R.id.txtNumeroEndereco);
         txtComplemento = (EditText) v.findViewById(R.id.txtComplementoEndereco);
         txtCep = (EditText) v.findViewById(R.id.txtCepEndereco);
 

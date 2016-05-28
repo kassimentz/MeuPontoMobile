@@ -1,6 +1,7 @@
 package com.edm.kassimentz.meupontomobile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -48,7 +49,6 @@ public class CadastroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -129,6 +129,9 @@ public class CadastroActivity extends AppCompatActivity {
         toast= Toast.makeText(contexto, texto,duracao);
         toast.show();
 
+        Intent login = new Intent(CadastroActivity.this, LoginActivity.class);
+        startActivity(login);
+        
     }
 
     

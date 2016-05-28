@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void cadastrar (View v){
-        Intent cadastro =  new Intent(LoginActivity.this, CadastroActivity.class);
+        Intent cadastro =  new Intent(this, CadastroActivity.class);
         startActivity(cadastro);
     }
 
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             toast.show();
             Intent main = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(main);
-            finish();
+            //finish();
         }else{
             txtSenha.requestFocus();
             texto = "Usuário ou senha não encontrados";

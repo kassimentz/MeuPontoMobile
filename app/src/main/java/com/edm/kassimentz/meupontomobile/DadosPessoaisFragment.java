@@ -2,14 +2,10 @@ package com.edm.kassimentz.meupontomobile;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.edm.kassimentz.meupontomobile.model.Funcionario;
@@ -38,7 +34,7 @@ public class DadosPessoaisFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_dados_pessoais, container, false);
         txtNome = (EditText) v.findViewById(R.id.txtNome);
         txtCpf = (EditText) v.findViewById(R.id.txtCpf);
-        txtUsuario = (EditText) v.findViewById(R.id.txtUsuario);
+        txtUsuario = (EditText) v.findViewById(R.id.txtNome);
         txtSenha = (EditText) v.findViewById(R.id.txtSenha);
 
 
