@@ -9,11 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.edm.kassimentz.meupontomobile.model.Funcionario;
 
-import jo.dis.library.data.DataCache;
 
 
 /**
@@ -23,9 +23,6 @@ public class DadosPessoaisFragment extends Fragment {
 
     private Funcionario funcionario;
     EditText txtNome, txtCpf, txtUsuario, txtSenha;
-
-
-    DataCache dataCache = DataCache.get(this.getActivity());
 
 
     public DadosPessoaisFragment() {
@@ -44,16 +41,24 @@ public class DadosPessoaisFragment extends Fragment {
         txtUsuario = (EditText) v.findViewById(R.id.txtUsuario);
         txtSenha = (EditText) v.findViewById(R.id.txtSenha);
 
+
         return inflater.inflate(R.layout.fragment_dados_pessoais, container, false);
     }
 
-	@Override
-      public void onSaveInstanceState(Bundle outState) {
-          super.onSaveInstanceState(outState);
-          setarFuncionario();
-		  ((CadastroActivity)getActivity()).setFuncionario(funcionario);	
-      }
-   
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        // Make sure that we are currently visible
+        if (this.isVisible()) {
+            // If we are becoming invisible, then...
+            if (!isVisibleToUser) {
+                setarFuncionario();
+                ((CadastroActivity)getActivity()).setFuncionario(funcionario);
+            }
+        }
+    }
 
     private void setarFuncionario() {
 

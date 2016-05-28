@@ -14,7 +14,6 @@ import android.widget.Spinner;
 import com.edm.kassimentz.meupontomobile.model.Endereco;
 import com.edm.kassimentz.meupontomobile.model.Funcionario;
 
-import jo.dis.library.data.DataCache;
 
 
 /**
@@ -22,7 +21,6 @@ import jo.dis.library.data.DataCache;
  */
 public class EnderecoFragment extends Fragment {
 
-    DataCache dataCache = DataCache.get(this.getActivity());
 
     private Endereco endereco;
     EditText txtLogradouro, txtNumero, txtComplemento, txtCep;
@@ -36,9 +34,6 @@ public class EnderecoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Funcionario funcionario = (Funcionario) dataCache.getObject("funcionario");
-
     }
 
     @Override
@@ -75,13 +70,21 @@ public class EnderecoFragment extends Fragment {
 
 
     }
-    
+
+
     @Override
-	  public void onSaveInstanceState(Bundle outState) {
-	      super.onSaveInstanceState(outState);
-	      setarEndereco();
-		  ((CadastroActivity)getActivity()).setEndereco(endereco);	
-	  }
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        // Make sure that we are currently visible
+        if (this.isVisible()) {
+            // If we are becoming invisible, then...
+            if (!isVisibleToUser) {
+                setarEndereco();
+                ((CadastroActivity)getActivity()).setEndereco(endereco);
+            }
+        }
+    }
 
     private void setarEndereco() {
         String logradouro = null, complemento= null, cidade = null, estado = null, pais = null;

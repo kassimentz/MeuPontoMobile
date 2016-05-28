@@ -130,28 +130,32 @@ public class CadastroActivity extends AppCompatActivity {
         toast.show();
 
     }
+
     
-    public setFuncionario(Funcionario funcionario){
+    public void setFuncionario(Funcionario funcionario){
+        Log.i("info", "salvou funcionario");
 		this.funcionario = funcionario;
 	}
 	
-	public getFuncionario(){
+	public Funcionario getFuncionario(){
 		return this.funcionario;
 	}
 	
-	public setEndereco(Endereco endereco){
+	public void setEndereco(Endereco endereco){
+        Log.i("info", "salvou endereco");
 		this.endereco = endereco;
 	}
 	
-	public getEndereco(){
+	public Endereco getEndereco(){
 		return this.endereco;
 	}
 	
-	public setTelefone(Telefone telefone){
+	public void setTelefone(Telefone telefone){
+        Log.i("info", "salvou telefone");
 		this.telefone = telefone;
 	}
 	
-	public getTelefone(){
+	public Telefone getTelefone(){
 		return this.telefone;
 	}
 }
