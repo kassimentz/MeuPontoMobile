@@ -32,9 +32,9 @@ public class DadosPessoaisFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_dados_pessoais, container, false);
-        txtNome = (EditText) v.findViewById(R.id.txtNome);
-        txtCpf = (EditText) v.findViewById(R.id.txtCpf);
-        txtUsuario = (EditText) v.findViewById(R.id.txtNome);
+        txtNome = (EditText) v.findViewById(R.id.txtNomeItem);
+        txtCpf = (EditText) v.findViewById(R.id.txtCpfItem);
+        txtUsuario = (EditText) v.findViewById(R.id.txtNomeItem);
         txtSenha = (EditText) v.findViewById(R.id.txtSenha);
 
 

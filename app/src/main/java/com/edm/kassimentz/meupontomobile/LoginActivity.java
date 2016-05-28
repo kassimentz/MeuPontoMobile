@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             toast.show();
             Intent main = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(main);
-            //finish();
+            finish();
         }else{
             txtSenha.requestFocus();
             texto = "Usuário ou senha não encontrados";

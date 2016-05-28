@@ -8,6 +8,9 @@
     <string name="telefone">Telefone Fragment</string>
     <string name="cidade">Cidade:</string>
     <string name="estado">Estado:</string>
+    <string name="action_settings">Settings</string>
+    <string name="sair">Sair</string>
+    <string name="back">Voltar</string>
 
 
     <string-array name="estados">

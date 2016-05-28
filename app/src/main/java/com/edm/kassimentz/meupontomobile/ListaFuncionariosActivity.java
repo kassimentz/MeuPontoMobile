@@ -13,29 +13,34 @@ import android.widget.Toast;
 import com.edm.kassimentz.meupontomobile.adapters.FuncionarioAdapter;
 import com.edm.kassimentz.meupontomobile.database.FuncionarioDAOImpl;
 
-import java.util.Map;
+public class ListaFuncionariosActivity extends AppCompatActivity {
 
-public class MainActivity extends AppCompatActivity {
-
-
+    FuncionarioDAOImpl dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_lista_funcionarios);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        dao = new FuncionarioDAOImpl(this.getBaseContext());
+        getLista();
     }
 
+    private void getLista() {
 
+        ListView lista = (ListView) findViewById(R.id.listViewFuncionarios);
+        FuncionarioAdapter adapter = new FuncionarioAdapter(ListaFuncionariosActivity.this, dao.listar());
+        lista.setAdapter(adapter);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main_actions, menu);
+        getMenuInflater().inflate(R.menu.activity_lista_funcionarios_actions, menu);
         return true;
     }
 
@@ -51,25 +56,14 @@ public class MainActivity extends AppCompatActivity {
         String texto = null;
         int duracao = Toast.LENGTH_SHORT;
 
-        if (id == R.id.sair) {
+        if (id == R.id.action_settings) {
+            texto = "Ainda será implementado";
+            toast= Toast.makeText(context, texto,duracao);
+            toast.show();
+        }
+
+        if(id == R.id.action_back){
             finish();
-        }
-
-        if(id == R.id.action_list_funcionarios){
-            Intent main = new Intent(MainActivity.this, ListaFuncionariosActivity.class);
-            startActivity(main);
-        }
-
-        if(id == R.id.action_list_enderecos){
-            texto = "Ainda será implementado";
-            toast= Toast.makeText(context, texto,duracao);
-            toast.show();
-        }
-
-        if(id == R.id.action_list_telefones){
-            texto = "Ainda será implementado";
-            toast= Toast.makeText(context, texto,duracao);
-            toast.show();
         }
 
         return super.onOptionsItemSelected(item);

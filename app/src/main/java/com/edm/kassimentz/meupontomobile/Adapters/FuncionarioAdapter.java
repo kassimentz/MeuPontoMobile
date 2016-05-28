@@ -1,4 +1,4 @@
-package com.edm.kassimentz.meupontomobile.Adapters;
+package com.edm.kassimentz.meupontomobile.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,10 +10,8 @@ import android.widget.TextView;
 import com.edm.kassimentz.meupontomobile.R;
 import com.edm.kassimentz.meupontomobile.model.Endereco;
 import com.edm.kassimentz.meupontomobile.model.Funcionario;
-import com.edm.kassimentz.meupontomobile.model.Telefone;
 
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by kassi on 28/05/16.
@@ -50,10 +48,10 @@ public class FuncionarioAdapter extends BaseAdapter{
         LayoutInflater inflater = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.list_item_funcionarios, null);
 
-        TextView txtNome = (TextView) view.findViewById(R.id.txtNome);
+        TextView txtNome = (TextView) view.findViewById(R.id.txtNomeItem);
         txtNome.setText(funcionario.getNome());
 
-        TextView txtCpf = (TextView) view.findViewById(R.id.txtCpf);
+        TextView txtCpf = (TextView) view.findViewById(R.id.txtCpfItem);
         txtCpf.setText(funcionario.getCpf());
 
         TextView txtCidade = (TextView) view.findViewById(R.id.txtCidade);
